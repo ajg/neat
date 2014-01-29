@@ -49,10 +49,6 @@ indent, group :: String -> String
 indent  = (++) (nl ++ "  ")
 group s = "(" ++ s ++ ")"
 
-nested :: Output a => a -> String
-nested = group . nest where
-  nest = join (indent "") . lines . output
-
 join :: [a] -> [[a]] -> [a]
 join = intercalate
 
@@ -71,9 +67,11 @@ instance Output File where
         output' _ = output chunk
 
 instance Output Block where
-  output (Block [chunk]) = nl ++ output chunk
-  output (Block chunks) = nothing ++ appendEach (output <$> chunks)
+  output (Block chunks) = nested $ case chunks of
+      [chunk] -> nl ++ output chunk
+      _       -> nothing ++ appendEach (output <$> chunks)
     where appendEach = concatMap $ (++) (nl ++ "++ ")
+          nested = group . join (indent "") . lines
 
 instance Output Chunk where
   output (Chunk location define @ (Define _ _)) = output location ++ output define
@@ -97,28 +95,28 @@ instance Output Element where
   output (Text t)             = show t
   output (Comment _)          = nothing
   output (Actual value)       = format ++ " " ++ output value
-  output (Define name block)  = output name ++ " = " ++ nested block
-  output (Filter value block) = output value ++ " " ++ nested block
+  output (Define name block)  = output name ++ " = " ++ output block
+  output (Filter value block) = output value ++ " " ++ output block
 
   output (For (pattern, value) block Nothing) =
-    output value ++ " >>= \\" ++ output pattern ++ " -> " ++ nested block
+    output value ++ " >>= \\" ++ output pattern ++ " -> " ++ output block
 
   output (For text _ (Just _)) =
     error "not implemented"
 
   output (If value block else') =
     "if " ++ output value
-    ++ indent "then " ++ nested block
-    ++ indent "else " ++ maybe nothing nested else'
+    ++ indent "then " ++ output block
+    ++ indent "else " ++ maybe nothing output else'
 
   output (Switch value cases default') =
     "case " ++ output value ++ " of"
     ++ (output =<< cases)
-    ++ maybe "" (("\n_ ->" ++) . nested) default'
+    ++ maybe "" (("\n_ ->" ++) . output) default'
 
 instance Output Case where
   output (Case pattern block) =
-    output pattern ++ " -> " ++ nested block
+    output pattern ++ " -> " ++ output block
 
 
 file :: Parsec String () File
