@@ -1,14 +1,9 @@
-module Text.Neat (parseFile, parseString) where
+module Text.Neat (parseString) where
 
 import Control.Applicative hiding (empty)
 import Data.Char (isSpace)
 import Data.List (intercalate, isPrefixOf, stripPrefix)
-import System.FilePath (takeFileName)
 import Text.Parsec hiding ((<|>), many, optional)
-
-parseFile :: FilePath -> IO String
-parseFile path = readFile path >>= return . parseString name
-  where name = takeFileName path
 
 parseString :: String -> String -> String
 parseString name input = case runParser file () name input of
@@ -71,7 +66,7 @@ instance Output Value where
   output (Value location value) = {- output location ++ -} "(" ++ value ++ ")"
 
 instance Output Pattern where
-  output (Pattern location pattern) = {- output location ++ -} pattern
+  output (Pattern location pattern) = output location ++ pattern
 
 instance Output Location where
   output (Location (file', line)) =

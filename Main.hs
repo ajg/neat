@@ -1,9 +1,15 @@
 
 import System.Environment (getArgs)
-import Text.Neat (parseFile)
+import System.FilePath (dropExtension, takeFileName)
+import System.IO (interact, readFile, writeFile)
+import Text.Neat (parseString)
 
 main :: IO ()
 main = getArgs >>= \args -> case args of
-         [path] -> parseFile path >>= putStrLn
-         [] -> error "no file specified"
-         _ -> error "too many arguments"
+  []     -> interact (parseString "-")
+  [path] -> handleFile path
+  _      -> error "too many arguments"
+  where handleFile path = do
+          input <- readFile path
+          output <- return $ parseString (takeFileName path) input
+          writeFile (dropExtension path) output
