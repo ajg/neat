@@ -2,7 +2,7 @@ module Text.Neat (parseFile, parseString) where
 
 import Control.Applicative hiding (empty)
 import Data.Char (isSpace)
-import Data.List (intercalate)
+import Data.List (intercalate, isPrefixOf, drop)
 import System.FilePath (takeFileName)
 import Text.Parsec hiding ((<|>), many, optional)
 
@@ -118,8 +118,17 @@ join = intercalate
 trim :: String -> String
 trim = f . f where f = reverse . dropWhile isSpace
 
-split :: [a] -> [a] -> [[a]]
-split delim list = error "not implemented"
+
+split :: Eq a => [a] -> [a] -> [[a]]
+split delim list
+  | null delim                 = return <$> list
+  | null list                  = [] : []
+  | length list < length delim = [list]
+  | delim `isPrefixOf` list    = [] : split delim (drop (length delim) list)
+  | otherwise                  = let (x:xs) = list in
+                                  case split delim xs of
+                                    []     -> [x:xs]
+                                    (y:ys) -> (x:y):ys
 
 file :: Parsec String () File
 file = File <$> block <* eof where
