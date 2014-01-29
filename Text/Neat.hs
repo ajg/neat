@@ -40,29 +40,16 @@ actualMarkers  = ("{{", "}}")
 commentMarkers = ("{#", "#}")
 elementMarkers = ("{%", "%}")
 
-nl, empty, format :: String
-nl     = "\n"
-empty  = ['"', '"']
-format = "format"
-
-indent :: String -> String
-indent  = (++) (nl ++ "  ")
-
-join :: [a] -> [[a]] -> [a]
-join = intercalate
-
-trim :: String -> String
-trim = f . f where f = reverse . dropWhile isSpace
-
-split :: [a] -> [a] -> [[a]]
-split delim list = error "not implemented"
+prelude   = ""
+interlude = "import Data.Foldable (toList)\n\n"
+postlude  = ""
 
 instance Output File where
-  output (File (Block chunks)) = divide chunks where
+  output (File (Block chunks)) = prelude ++ divide chunks ++ postlude where
     divide [] = []
     divide (chunk @ (Chunk location element) : rest) =
       output' element ++ divide rest where
-        output' (Text text) = output location ++ text
+        output' (Text text) = output location ++ text ++ interlude
         output' _ = output chunk
 
 instance Output Block where
@@ -91,17 +78,16 @@ instance Output Location where
     "{-# LINE " ++ show line ++ " " ++ show file' ++ " #-}" ++ nl
 
 instance Output Element where
-  output (Text t)             = show t
+  output (Text text)          = show text
   output (Comment _)          = empty
   output (Actual value)       = format ++ " " ++ output value
   output (Define name block)  = output name ++ " = " ++ output block
   output (Filter value block) = output value ++ " " ++ output block
 
-  output (For (pattern, value) block Nothing) =
-    output value ++ " >>= \\" ++ output pattern ++ " -> " ++ output block
-
-  output (For text _ (Just _)) =
-    error "not implemented"
+  output (For (pattern, value) block else') =
+    "let _l = toList " ++ output value ++ " in if null l"
+    ++ indent "then _l >>= \\" ++ output pattern ++ " -> " ++ output block
+    ++ indent "else " ++ maybe empty output else'
 
   output (If value block else') =
     "if " ++ output value
@@ -117,6 +103,23 @@ instance Output Case where
   output (Case pattern block) =
     output pattern ++ " -> " ++ output block
 
+
+nl, empty, format :: String
+nl     = "\n"
+empty  = "\"\""
+format = "format"
+
+indent :: String -> String
+indent  = (++) (nl ++ "  ")
+
+join :: [a] -> [[a]] -> [a]
+join = intercalate
+
+trim :: String -> String
+trim = f . f where f = reverse . dropWhile isSpace
+
+split :: [a] -> [a] -> [[a]]
+split delim list = error "not implemented"
 
 file :: Parsec String () File
 file = File <$> block <* eof where
