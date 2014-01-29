@@ -94,8 +94,8 @@ instance Output Element where
   output (Define name block)  = name ++ " = " ++ nested block
   output (Filter value block) = output value ++ " " ++ nested block
 
-  output (For (p, Value v) block Nothing) =
-    group v ++ " " ++ lambda p block
+  output (For (pattern, value) block Nothing) =
+    output value ++ " " ++ lambda pattern block
 
   output (For text _ (Just _)) =
     error "not implemented"
