@@ -81,7 +81,10 @@ instance Output Chunk where
   output (Chunk location element) = group $ output location ++ output element
 
 instance Output Value where
-  output (Value v) = group v
+  output (Value value) = group value
+
+instance Output Pattern where
+  output (Pattern pattern) = pattern
 
 instance Output Location where
   output (Location (file', line)) =
@@ -115,8 +118,8 @@ instance Output Case where
     output location ++ case' pattern block
 
 lambda, case' :: Pattern -> Block -> String
-lambda (Pattern p) block = ">>= \\" ++ p ++ " -> " ++ nested block
-case' (Pattern p) block  = " " ++ p ++ " -> " ++ nested block
+lambda pattern block = ">>= \\" ++ output pattern ++ " -> " ++ nested block
+case' pattern block  = " " ++ output pattern ++ " -> " ++ nested block
 
 
 file :: Parsec String () File
