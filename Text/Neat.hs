@@ -45,9 +45,8 @@ nl     = "\n"
 empty  = ['"', '"']
 format = "format"
 
-indent, group :: String -> String
+indent :: String -> String
 indent  = (++) (nl ++ "  ")
-group s = "(" ++ s ++ ")"
 
 join :: [a] -> [[a]] -> [a]
 join = intercalate
@@ -67,22 +66,22 @@ instance Output File where
         output' _ = output chunk
 
 instance Output Block where
-  output (Block chunks) = nested $ case chunks of
+  output (Block chunks) = "(" ++ (nested $ case chunks of
       [chunk] -> nl ++ output chunk
-      _       -> empty ++ appendEach (output <$> chunks)
+      _       -> empty ++ appendEach (output <$> chunks)) ++ ")"
     where appendEach = concatMap $ (++) (nl ++ "++ ")
-          nested = group . join (indent "") . lines
+          nested = join (indent "") . lines
 
 instance Output Chunk where
   output (Chunk location define @ (Define _ _)) = output location ++ output define
   output (Chunk location text @ (Text _)) = output location ++ output text
-  output (Chunk location element) = group $ output location ++ output element
+  output (Chunk location element) = "(" ++ output location ++ output element ++ ")"
 
 instance Output Name where
   output (Name location name) = {- output location ++ -} name
 
 instance Output Value where
-  output (Value location value) = {- output location ++ -} group value
+  output (Value location value) = {- output location ++ -} "(" ++ value ++ ")"
 
 instance Output Pattern where
   output (Pattern location pattern) = {- output location ++ -} pattern
