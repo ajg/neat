@@ -69,8 +69,8 @@ instance Output Pattern where
   output (Pattern location pattern) = output location ++ pattern
 
 instance Output Location where
-  output (Location (file', line)) =
-    "{-# LINE " ++ show line ++ " " ++ show file' ++ " #-}" ++ nl
+  output (Location (file, line)) =
+    "{-# LINE " ++ show line ++ " " ++ show file ++ " #-}" ++ nl
 
 instance Output Element where
   output (Text text)          = show text
