@@ -1,4 +1,4 @@
-module Text.Neat (parseFile, parseString, split) where
+module Text.Neat (parseFile, parseString) where
 
 import Control.Applicative hiding (empty)
 import Data.Char (isSpace)
@@ -41,15 +41,15 @@ commentMarkers = ("{#", "#}")
 elementMarkers = ("{%", "%}")
 
 prelude   = ""
-interlude = "import Data.Foldable (toList)\n\n"
+interlude = "" -- TODO: "import Data.Foldable (toList)\n\n"
 postlude  = ""
 
 instance Output File where
   output (File (Block chunks)) = prelude ++ divide chunks ++ postlude where
     divide [] = []
     divide (chunk @ (Chunk location element) : rest) =
-      output' element ++ divide rest where
-        output' (Text text) = output location ++ text ++ interlude
+      output' element ++ interlude ++ divide rest where
+        output' (Text text) = output location ++ text
         output' _ = output chunk
 
 instance Output Block where
