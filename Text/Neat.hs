@@ -6,22 +6,22 @@ import Data.List (intercalate)
 import System.FilePath (takeFileName)
 import Text.Parsec hiding ((<|>), many, optional)
 
-data File     = File Block                 deriving (Eq, Ord, Read, Show)
-data Block    = Block [Chunk]              deriving (Eq, Ord, Read, Show)
-data Chunk    = Chunk Location Element     deriving (Eq, Ord, Read, Show)
-data Value    = Value String               deriving (Eq, Ord, Read, Show)
-data Case     = Case Location String Block deriving (Eq, Ord, Read, Show)
-data Location = Location (String, Int)     deriving (Eq, Ord, Read, Show)
 data Element  = Actual Value
               | Comment Block
-              | Define String Block
+              | Define Name Block
               | Filter Value Block
-              | For String Block (Maybe Block)
+              | For (Pattern, Value) Block (Maybe Block)
               | If Value Block (Maybe Block)
               | Switch Value [Case] (Maybe Block)
-              | Text String
-  deriving (Eq, Ord, Read, Show)
-
+              | Text String                 deriving (Eq, Ord, Read, Show)
+data File     = File Block                  deriving (Eq, Ord, Read, Show)
+data Block    = Block [Chunk]               deriving (Eq, Ord, Read, Show)
+data Chunk    = Chunk Location Element      deriving (Eq, Ord, Read, Show)
+data Case     = Case Location Pattern Block deriving (Eq, Ord, Read, Show)
+data Location = Location (String, Int)      deriving (Eq, Ord, Read, Show)
+data Value    = Value String                deriving (Eq, Ord, Read, Show)
+data Pattern  = Pattern String              deriving (Eq, Ord, Read, Show)
+type Name     = String
 
 class Output a where
   output :: a -> String
@@ -53,10 +53,6 @@ nested :: Output a => a -> String
 nested = group . nest where
   nest = join (indent "") . lines . output
 
-lambda, match :: String -> Block -> String
-lambda name block   = ">>= \\" ++ name ++ " -> " ++ nested block
-match pattern block = " " ++ pattern ++ " -> " ++ nested block
-
 join :: [a] -> [[a]] -> [a]
 join = intercalate
 
@@ -85,25 +81,23 @@ instance Output Chunk where
   output (Chunk location element) = group $ output location ++ output element
 
 instance Output Value where
-  output (Value text) = group text
+  output (Value v) = group v
 
 instance Output Location where
   output (Location (file', line)) =
     "{-# LINE " ++ show line ++ " " ++ show file' ++ " #-}" ++ nl
 
 instance Output Element where
-  output (Text text)          = show text
+  output (Text t)             = show t
   output (Comment _)          = nothing
   output (Actual value)       = format ++ " " ++ output value
-  output (Define text block)  = text ++ " = " ++ nested block
+  output (Define name block)  = name ++ " = " ++ nested block
   output (Filter value block) = output value ++ " " ++ nested block
 
-  output (For text block Nothing) =
-    case split " in " text of
-      [name, value] -> group value ++ " " ++ lambda name block
-      _             -> error $ "invalid for: " ++ text
+  output (For (p, Value v) block Nothing) =
+    group v ++ " " ++ lambda p block
 
-  output (For _ _ (Just _)) =
+  output (For text _ (Just _)) =
     error "not implemented"
 
   output (If value block else') =
@@ -114,11 +108,15 @@ instance Output Element where
   output (Switch value cases default') =
     "case " ++ output value ++ " of"
     ++ (output =<< cases)
-    ++ maybe "" (("\n" ++) . match "_") default'
+    ++ maybe "" (("\n" ++) . case' (Pattern "_")) default'
 
 instance Output Case where
   output (Case location pattern block) =
-    output location ++ match pattern block
+    output location ++ case' pattern block
+
+lambda, case' :: Pattern -> Block -> String
+lambda (Pattern p) block = ">>= \\" ++ p ++ " -> " ++ nested block
+case' (Pattern p) block  = " " ++ p ++ " -> " ++ nested block
 
 
 file :: Parsec String () File
@@ -126,19 +124,19 @@ file = File <$> block <* eof where
   block = Block <$> many chunk
   chunk = Chunk <$> location <*> element
   element = choice $ try <$> [
-    Actual  <$> value `within` actualMarkers,
+    Actual  <$> value' `within` actualMarkers,
     Comment <$> block `within` commentMarkers,
-    Define  <$> opening  "def"    <*> block <* closing "enddef",
-    Filter  <$> opening' "filter" <*> block <* closing "endfilter",
-    For     <$> opening  "for"    <*> block <*> else' <* closing "endfor",
-    If      <$> opening' "if"     <*> block <*> else' <* closing "endif",
-    Switch  <$> opening' "switch" <*> cases <*> default' <* closing "endswitch",
+    Define  <$> open "def"    name   <*> block <* end "def",
+    Filter  <$> open "filter" value  <*> block <* end "filter",
+    For     <$> open "for"    clause <*> block <*> else' <* end "for",
+    If      <$> open "if"     value  <*> block <*> else' <* end "if",
+    Switch  <$> open "switch" value  <*> cases <*> default' <* end "switch",
     Text    <$> (filterText <$> some textChar <*> precedesActual)]
 
-  cases = spaces *> many (try case')
-  case' = Case <$> location <*> opening "case" <*> block
-  else' = optionMaybe . try $ closing "else" *> block
-  default' = optionMaybe . try $ closing "default" *> block
+  else'    = optionMaybe . try $ close "else" *> block
+  default' = optionMaybe . try $ close "default" *> block
+  cases    = spaces *> many (try case') where
+    case'  = Case <$> location <*> open "case" pattern <*> block
 
   filterText chars True = chars
   filterText chars False = trimTrail chars
@@ -151,14 +149,28 @@ file = File <$> block <* eof where
   precedesActual = option False (True <$ lookAhead actual)
     where actual = try $ string $ fst actualMarkers
 
+  {-
   opening' = (Value <$>) . opening
   opening name = (trim <$> (t *> text)) `within` elementMarkers
     where t = spaces *> string name <* notFollowedBy letter
   closing name = (spaces *> string name <* spaces) `within` elementMarkers
+  -}
+
+  open tag f = f <$> ((trim <$> (t *> text)) `within` elementMarkers)
+    where t = spaces *> string tag <* notFollowedBy letter
+  close tag = (spaces *> string tag <* spaces) `within` elementMarkers
+  end = close . ("end" ++)
+
   p `within` (left, right) = between (string left) (string right) p
 
   text = many textChar
-  value = Value <$> trim <$> text
+  value = Value
+  value' = Value <$> trim <$> text
+  name = id
+  pattern = Pattern
+  clause s = case split " in " s of
+    [p, v] -> (Pattern p, Value v)
+    _      -> error $ "invalid for: " ++ s
 
   location = locationFrom <$> getPosition where
     locationFrom pos = Location (sourceName pos, sourceLine pos)
