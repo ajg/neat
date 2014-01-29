@@ -1,6 +1,6 @@
 module Text.Neat (parseFile, parseString) where
 
-import Control.Applicative
+import Control.Applicative hiding (empty)
 import Data.Char (isSpace)
 import Data.List (intercalate)
 import System.FilePath (takeFileName)
@@ -40,10 +40,10 @@ actualMarkers  = ("{{", "}}")
 commentMarkers = ("{#", "#}")
 elementMarkers = ("{%", "%}")
 
-nl, nothing, format :: String
-nl      = "\n"
-nothing = ['"', '"']
-format  = "format"
+nl, empty, format :: String
+nl     = "\n"
+empty  = ['"', '"']
+format = "format"
 
 indent, group :: String -> String
 indent  = (++) (nl ++ "  ")
@@ -69,7 +69,7 @@ instance Output File where
 instance Output Block where
   output (Block chunks) = nested $ case chunks of
       [chunk] -> nl ++ output chunk
-      _       -> nothing ++ appendEach (output <$> chunks)
+      _       -> empty ++ appendEach (output <$> chunks)
     where appendEach = concatMap $ (++) (nl ++ "++ ")
           nested = group . join (indent "") . lines
 
@@ -93,7 +93,7 @@ instance Output Location where
 
 instance Output Element where
   output (Text t)             = show t
-  output (Comment _)          = nothing
+  output (Comment _)          = empty
   output (Actual value)       = format ++ " " ++ output value
   output (Define name block)  = output name ++ " = " ++ output block
   output (Filter value block) = output value ++ " " ++ output block
@@ -107,7 +107,7 @@ instance Output Element where
   output (If value block else') =
     "if " ++ output value
     ++ indent "then " ++ output block
-    ++ indent "else " ++ maybe nothing output else'
+    ++ indent "else " ++ maybe empty output else'
 
   output (Switch value cases default') =
     "case " ++ output value ++ " of"
@@ -126,17 +126,17 @@ file = File <$> block <* eof where
   element = choice $ try <$> [
     Actual  <$> value' `within` actualMarkers,
     Comment <$> block `within` commentMarkers,
-    Define  <$> open "def"    name   <*> block <* end "def",
-    Filter  <$> open "filter" value  <*> block <* end "filter",
+    Define  <$> open "def"    Name   <*> block <* end "def",
+    Filter  <$> open "filter" Value  <*> block <* end "filter",
     For     <$> open "for"    clause <*> block <*> else' <* end "for",
-    If      <$> open "if"     value  <*> block <*> else' <* end "if",
-    Switch  <$> open "switch" value  <*> cases <*> default' <* end "switch",
+    If      <$> open "if"     Value  <*> block <*> else' <* end "if",
+    Switch  <$> open "switch" Value  <*> cases <*> default' <* end "switch",
     Text    <$> (filterText <$> some textChar <*> precedesActual)]
 
   else'    = optionMaybe . try $ close "else" *> block
   default' = optionMaybe . try $ close "default" *> block
   cases    = spaces *> many (try case') where
-    case'  = Case <$> open "case" pattern <*> block
+    case'  = Case <$> open "case" Pattern <*> block
 
   filterText chars True = chars
   filterText chars False = trimTrail chars
@@ -158,10 +158,6 @@ file = File <$> block <* eof where
 
   text = many textChar
   value' = Value <$> location <*> (trim <$> text)
-
-  value = Value
-  name = Name
-  pattern = Pattern
 
   clause l s = case split " in " s of
     [p, v] -> (Pattern l p, Value l v)
