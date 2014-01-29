@@ -6,6 +6,15 @@ import Data.List (intercalate)
 import System.FilePath (takeFileName)
 import Text.Parsec hiding ((<|>), many, optional)
 
+parseFile :: FilePath -> IO String
+parseFile path = readFile path >>= return . parseString name
+  where name = takeFileName path
+
+parseString :: String -> String -> String
+parseString name input = case runParser file () name input of
+    Right result -> output result
+    Left failure -> error ("parsing failure at " ++ show failure)
+
 data Element  = Actual Value
               | Comment Block
               | Define Name Block
@@ -25,15 +34,6 @@ data Name     = Name Location String        deriving (Eq, Ord, Read, Show)
 
 class Output a where
   output :: a -> String
-
-parseFile :: FilePath -> IO String
-parseFile path = readFile path >>= return . parseString name
-  where name = takeFileName path
-
-parseString :: String -> String -> String
-parseString name input = case runParser file () name input of
-    Right result -> output result
-    Left failure -> error ("parsing failure at " ++ show failure)
 
 actualMarkers, commentMarkers, elementMarkers :: (String, String)
 actualMarkers  = ("{{", "}}")
