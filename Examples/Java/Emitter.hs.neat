@@ -1,0 +1,38 @@
+{-# LANGUAGE NoMonomorphismRestriction #-}
+
+module Java.Emitter where
+
+import Data.Foldable (toList)
+import Java.AST
+
+{% def emit (inputPath) %}
+// File: {{ baseName inputPath }}.java
+// Code generated from {{ baseName inputPath }}
+package {{ join "." package }};
+
+{% for (Import static trail wildcard) in imports %}
+import {% if static %}static {% endif %}{{ join "." trail }}{% if wildcard %}.*{% endif %};
+{% endfor %}
+
+{{ access }} {{ modifier }} class {{ name }}
+{% for parent in parents %}
+  {% switch parent %}
+    {% case (Implements interfaces) %}
+   implements {{ interfaces }}
+    {% case (Extends super) %}
+   extends {{ super }}
+  {% endswitch %}
+{% endfor %}
+{
+  {% for (Member target annotations access element) in members %}
+    {% switch element %}
+      {% case (Constructor _ arguments _ (_, code)) %}
+
+      {% case (Method qualifier modifier type' name arguments exceptions body) %}
+
+      {% default %}
+      // Unimplemented member type.
+    {% endswitch %}
+  {% endfor %}
+}
+{% enddef %}
