@@ -17,10 +17,10 @@ data Element  = Actual Value
 data File     = File Block                  deriving (Eq, Ord, Read, Show)
 data Block    = Block [Chunk]               deriving (Eq, Ord, Read, Show)
 data Chunk    = Chunk Location Element      deriving (Eq, Ord, Read, Show)
-data Case     = Case Location Pattern Block deriving (Eq, Ord, Read, Show)
+data Case     = Case Pattern Block          deriving (Eq, Ord, Read, Show)
 data Location = Location (String, Int)      deriving (Eq, Ord, Read, Show)
 data Value    = Value String                deriving (Eq, Ord, Read, Show)
-data Pattern  = Pattern String              deriving (Eq, Ord, Read, Show)
+data Pattern  = Pattern Location String     deriving (Eq, Ord, Read, Show)
 type Name     = String
 
 class Output a where
@@ -84,7 +84,7 @@ instance Output Value where
   output (Value value) = group value
 
 instance Output Pattern where
-  output (Pattern pattern) = pattern
+  output (Pattern location pattern) = {- output location ++ -} pattern
 
 instance Output Location where
   output (Location (file', line)) =
@@ -98,7 +98,7 @@ instance Output Element where
   output (Filter value block) = output value ++ " " ++ nested block
 
   output (For (pattern, value) block Nothing) =
-    output value ++ " " ++ lambda pattern block
+    output value ++ " >>= \\" ++ output pattern ++ " -> " ++ nested block
 
   output (For text _ (Just _)) =
     error "not implemented"
@@ -111,15 +111,11 @@ instance Output Element where
   output (Switch value cases default') =
     "case " ++ output value ++ " of"
     ++ (output =<< cases)
-    ++ maybe "" (("\n" ++) . case' (Pattern "_")) default'
+    ++ maybe "" (("\n_ ->" ++) . nested) default'
 
 instance Output Case where
-  output (Case location pattern block) =
-    output location ++ case' pattern block
-
-lambda, case' :: Pattern -> Block -> String
-lambda pattern block = ">>= \\" ++ output pattern ++ " -> " ++ nested block
-case' pattern block  = " " ++ output pattern ++ " -> " ++ nested block
+  output (Case pattern block) =
+    output pattern ++ " -> " ++ nested block
 
 
 file :: Parsec String () File
@@ -139,7 +135,7 @@ file = File <$> block <* eof where
   else'    = optionMaybe . try $ close "else" *> block
   default' = optionMaybe . try $ close "default" *> block
   cases    = spaces *> many (try case') where
-    case'  = Case <$> location <*> open "case" pattern <*> block
+    case'  = Case <$> open "case" pattern <*> block
 
   filterText chars True = chars
   filterText chars False = trimTrail chars
@@ -152,14 +148,7 @@ file = File <$> block <* eof where
   precedesActual = option False (True <$ lookAhead actual)
     where actual = try $ string $ fst actualMarkers
 
-  {-
-  opening' = (Value <$>) . opening
-  opening name = (trim <$> (t *> text)) `within` elementMarkers
-    where t = spaces *> string name <* notFollowedBy letter
-  closing name = (spaces *> string name <* spaces) `within` elementMarkers
-  -}
-
-  open tag f = f <$> ((trim <$> (t *> text)) `within` elementMarkers)
+  open tag f = f <$> location <*> ((trim <$> (t *> text)) `within` elementMarkers)
     where t = spaces *> string tag <* notFollowedBy letter
   close tag = (spaces *> string tag <* spaces) `within` elementMarkers
   end = close . ("end" ++)
@@ -167,13 +156,17 @@ file = File <$> block <* eof where
   p `within` (left, right) = between (string left) (string right) p
 
   text = many textChar
-  value = Value
   value' = Value <$> trim <$> text
-  name = id
-  pattern = Pattern
+
+  value _ = Value
+  name _ = id
+  pattern l = Pattern l
+  clause l s = undefined
+  {-
   clause s = case split " in " s of
     [p, v] -> (Pattern p, Value v)
     _      -> error $ "invalid for: " ++ s
+  -}
 
   location = locationFrom <$> getPosition where
     locationFrom pos = Location (sourceName pos, sourceLine pos)
