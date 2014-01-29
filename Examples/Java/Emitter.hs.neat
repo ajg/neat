@@ -1,19 +1,49 @@
-{-# LANGUAGE NoMonomorphismRestriction #-}
+module {- Example. -} Java.Emitter where
 
-module Java.Emitter where
+import Data.Foldable
+import Data.List
+import {- Example. -} Java.AST
+import System.FilePath
 
-import Data.Foldable (toList)
-import Java.AST
+format :: Show a => a -> String
+format = show
+join = intercalate
 
-{% def emit (inputPath) %}
-// File: {{ baseName inputPath }}.java
-// Code generated from {{ baseName inputPath }}
-package {{ join "." package }};
+instance Show QName where
+  show (QName names) = join "." names
 
-{% for (Import static trail wildcard) in imports %}
-import {% if static %}static {% endif %}{{ join "." trail }}{% if wildcard %}.*{% endif %};
+instance Show Type where
+  show (Type annotations qualifiers specifiers qname parameters) = show qname
+
+instance Show Access where
+  show Public    = "public"
+  show Private   = "private"
+  show Protected = "protected"
+  show Package   = ""
+
+instance Show Modifier where
+  show Static     = "static"
+  show Abstract   = "abstract"
+  show Unmodified = ""
+
+
+
+{-
+instance Show Type where
+{% def show (Type annotations qualifiers specifiers qname parameters) %}
+{{ join "." qname }}
+{% enddef %}
+-}
+
+{% def emit (File path package imports cls) %}
+// Code generated from {{ takeFileName path }}
+package {{ package }};
+
+{% for (Import static qname wildcard) in imports %}
+import {% if static %}static {% endif %}{{ qname }}{% if wildcard %}.*{% endif %};
 {% endfor %}
 
+{% with (Class annotations access modifier name parents members) = cls %}
 {{ access }} {{ modifier }} class {{ name }}
 {% for parent in parents %}
   {% switch parent %}
@@ -24,9 +54,9 @@ import {% if static %}static {% endif %}{{ join "." trail }}{% if wildcard %}.*{
   {% endswitch %}
 {% endfor %}
 {
-  {% for (Member target annotations access element) in members %}
+  {% for (Member annotations access element) in members %}
     {% switch element %}
-      {% case (Constructor _ arguments _ (_, code)) %}
+      {% case (Constructor arguments (_, code)) %}
 
       {% case (Method qualifier modifier type' name arguments exceptions body) %}
 
@@ -35,4 +65,5 @@ import {% if static %}static {% endif %}{{ join "." trail }}{% if wildcard %}.*{
     {% endswitch %}
   {% endfor %}
 }
+{% endwith %}
 {% enddef %}
