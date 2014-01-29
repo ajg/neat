@@ -19,9 +19,9 @@ data Block    = Block [Chunk]               deriving (Eq, Ord, Read, Show)
 data Chunk    = Chunk Location Element      deriving (Eq, Ord, Read, Show)
 data Case     = Case Pattern Block          deriving (Eq, Ord, Read, Show)
 data Location = Location (String, Int)      deriving (Eq, Ord, Read, Show)
-data Value    = Value String                deriving (Eq, Ord, Read, Show)
+data Value    = Value Location String       deriving (Eq, Ord, Read, Show)
 data Pattern  = Pattern Location String     deriving (Eq, Ord, Read, Show)
-type Name     = String
+data Name     = Name Location String        deriving (Eq, Ord, Read, Show)
 
 class Output a where
   output :: a -> String
@@ -80,8 +80,11 @@ instance Output Chunk where
   output (Chunk location text @ (Text _)) = output location ++ output text
   output (Chunk location element) = group $ output location ++ output element
 
+instance Output Name where
+  output (Name location name) = {- output location ++ -} name
+
 instance Output Value where
-  output (Value value) = group value
+  output (Value location value) = {- output location ++ -} group value
 
 instance Output Pattern where
   output (Pattern location pattern) = {- output location ++ -} pattern
@@ -94,7 +97,7 @@ instance Output Element where
   output (Text t)             = show t
   output (Comment _)          = nothing
   output (Actual value)       = format ++ " " ++ output value
-  output (Define name block)  = name ++ " = " ++ nested block
+  output (Define name block)  = output name ++ " = " ++ nested block
   output (Filter value block) = output value ++ " " ++ nested block
 
   output (For (pattern, value) block Nothing) =
@@ -156,17 +159,15 @@ file = File <$> block <* eof where
   p `within` (left, right) = between (string left) (string right) p
 
   text = many textChar
-  value' = Value <$> trim <$> text
+  value' = Value <$> location <*> (trim <$> text)
 
-  value _ = Value
-  name _ = id
-  pattern l = Pattern l
-  clause l s = undefined
-  {-
-  clause s = case split " in " s of
-    [p, v] -> (Pattern p, Value v)
+  value = Value
+  name = Name
+  pattern = Pattern
+
+  clause l s = case split " in " s of
+    [p, v] -> (Pattern l p, Value l v)
     _      -> error $ "invalid for: " ++ s
-  -}
 
   location = locationFrom <$> getPosition where
     locationFrom pos = Location (sourceName pos, sourceLine pos)
