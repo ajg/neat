@@ -3,7 +3,7 @@ module Example.HTML.Template where
 import Example.HTML.Post
 import Text.Neat
 
-{% def template (Post author subject paragraphs) %}
+{% def generate (Post author subject paragraphs) %}
 <!-- This code was automatically generated using Neat. -->
 <!DOCTYPE html>
 <html>

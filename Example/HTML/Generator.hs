@@ -2,6 +2,6 @@
 import Example.HTML.Post
 import Example.HTML.Template
 
-main = putStrLn (template samplePost)
+main = putStrLn (generate samplePost)
 
 samplePost = Post "Joe" "Breakfast" ["I love pancakes, waffles & toast."]

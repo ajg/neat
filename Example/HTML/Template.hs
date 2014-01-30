@@ -5,7 +5,7 @@ import Example.HTML.Post
 import Text.Neat
 
 {-# LINE 6 "Template.hs.neat" #-}
-template (Post author subject paragraphs) = (""
+generate (Post author subject paragraphs) = (""
   ++ {-# LINE 6 "Template.hs.neat" #-}
   "\n<!-- This code was automatically generated using Neat. -->\n<!DOCTYPE html>\n<html>\n  <head>\n    <title>"
   ++ ({-# LINE 11 "Template.hs.neat" #-}
