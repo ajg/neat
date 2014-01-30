@@ -4,26 +4,7 @@ import Data.List
 import Example.Java.AST
 import System.FilePath
 
-format :: Show a => a -> String
-format = show
-join = intercalate
-
-instance Show QName where
-  show (QName names) = join "." names
-
-instance Show Type where
-  show (Type annotations qualifiers specifiers qname parameters) = show qname
-
-instance Show Access where
-  show Public    = "public"
-  show Private   = "private"
-  show Protected = "protected"
-  show Package   = ""
-
-instance Show Modifier where
-  show Static     = "static"
-  show Abstract   = "abstract"
-  show Unmodified = ""
+format x = show x
 
 main = putStrLn $ emit file where
   file = File "Foo.java.neat" (QName ["org.example"]) [] cls
@@ -35,6 +16,8 @@ instance Show Type where
 {% def show (Type annotations qualifiers specifiers qname parameters) %}
 {{ qname | join "." }}
 {% enddef %}
+
+join = intercalate
 -}
 
 {% def emit (File path package imports cls) %}
