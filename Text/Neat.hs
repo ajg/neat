@@ -82,7 +82,7 @@ instance Output Element where
   output (Filter value block) = output value ++ " " ++ output block
 
   output (For (Binding pattern value) block else') =
-    "let _l = toList " ++ output value ++ " in if null _l"
+    "let _l = toList " ++ output value ++ " in if (not . null) _l"
     ++ indent "then _l >>= \\" ++ output pattern ++ " -> " ++ output block
     ++ indent "else " ++ maybe empty output else'
 
