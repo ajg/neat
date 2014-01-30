@@ -76,7 +76,7 @@ instance Output Location where
 
 instance Output Element where
   output (Text text)          = show text
-  output (Comment _)          = empty
+  output (Comment _)          = empty -- TODO? Escape and output within {- -}.
   output (Actual value)       = format ++ " " ++ output value
   output (Define name block)  = output name ++ " = " ++ output block
   output (Filter value block) = output value ++ " " ++ output block
