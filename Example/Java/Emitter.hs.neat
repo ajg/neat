@@ -10,45 +10,35 @@ main = putStrLn $ emit file where
   file = File "Foo.java.neat" (QName ["org.example"]) [] cls
   cls  = Class [] Public Unmodified "Foo" [] []
 
-
-{-
-instance Show Type where
-{% def show (Type annotations qualifiers specifiers qname parameters) %}
-{{ qname | join "." }}
-{% enddef %}
-
-join = intercalate
--}
-
 {% def emit (File path package imports cls) %}
-// Code generated from {{ takeFileName path }}
-package {{ package }};
+  // Code generated from {{ takeFileName path }}
+  package {{ package }};
 
-{% for (Import static qname wildcard) in imports %}
-import {% if static %}static {% endif %}{{ qname }}{% if wildcard %}.*{% endif %};
-{% endfor %}
-
-{% with (Class annotations access modifier name parents members) = cls %}
-{{ access }} {{ modifier }} class {{ name }}
-{% for parent in parents %}
-  {% switch parent %}
-    {% case (Implements interfaces) %}
-   implements {{ interfaces }}
-    {% case (Extends super) %}
-   extends {{ super }}
-  {% endswitch %}
-{% endfor %}
-{
-  {% for (Member annotations access element) in members %}
-    {% switch element %}
-      {% case (Constructor arguments (_, code)) %}
-
-      {% case (Method qualifier modifier type' name arguments exceptions body) %}
-
-      {% default %}
-      // Unimplemented member type.
-    {% endswitch %}
+  {% for (Import static qname wildcard) in imports %}
+  import {% if static %}static {% endif %}{{ qname }}{% if wildcard %}.*{% endif %};
   {% endfor %}
-}
-{% endwith %}
+
+  {% with (Class annotations access modifier name parents members) = cls %}
+    {{ access }} {{ modifier }} class {{ name }}
+    {% for parent in parents %}
+      {% switch parent %}
+        {% case (Implements interfaces) %}
+       implements {{ interfaces }}
+        {% case (Extends super) %}
+       extends {{ super }}
+      {% endswitch %}
+    {% endfor %}
+    {
+      {% for (Member annotations access element) in members %}
+        {% switch element %}
+          {% case (Constructor arguments (_, code)) %}
+
+          {% case (Method qualifier modifier type' name arguments exceptions body) %}
+
+          {% default %}
+          // Unimplemented member type.
+        {% endswitch %}
+      {% endfor %}
+    }
+  {% endwith %}
 {% enddef %}
