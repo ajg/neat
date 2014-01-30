@@ -3,7 +3,7 @@ import Example.Java.AST
 import System.FilePath
 import Text.Neat
 
-main = putStrLn $ emit sampleFile
+main = putStrLn (emit sampleFile)
 
 
 {% def emit (File path package imports cls) %}

@@ -9,7 +9,6 @@ type Author    = String
 type Subject   = String
 type Paragraph = String
 
-samplePost = Post "Joe" "Breakfast" ["I love pancakes, waffles & toast."]
 
 newtype Safe = Safe String
 
