@@ -1,12 +1,9 @@
 
-import Data.Foldable
 import Example.HTML.Post
-import System.FilePath
+import Text.Neat
 
-main = putStrLn $ emit post where
-  post = Post "Joe" (UserInput "Breakfast") [UserInput "I love pancakes, waffles and toast."]
+main = putStrLn $ emit samplePost
 
-format x = show x
 
 {% def emit (Post author subject paragraphs) %}
 <!-- This code was automatically generated using Neat. -->

@@ -1,13 +1,11 @@
 module Example.Java.AST where
 
 import Data.List
+import Text.Neat
 
 data File    = File FilePath QName [Import] Class
 data Import  = Import Bool QName Bool
 data Type    = Type [Annotation] [Qualifier] [Specifier] QName [Type]
-data Kind    = Enum
-             | Interface
-          -- | Class
 data Class   = Class [Annotation] Access Modifier Name [Parent] [Member]
 data Access  = Public
              | Protected
@@ -20,7 +18,6 @@ data Element = Enumeration Name [Enumerator]
              | Constructor [Argument] Block
              | Field  Qualifier Modifier Type Name (Maybe Value)
              | Method Qualifier Modifier Type Name [Argument] [Exception] Body
-             | Nested [Modifier] Kind Name [Parent] Body
 
 data Qualifier  = Final
                 | Volatile
@@ -41,20 +38,26 @@ type Body     = Maybe Block
 type Block    = (Position, String)
 data Position = Position {row, column :: Int}
 
+sampleFile = File "Foo.java.neat" (QName ["org.example"]) [] cls
+  where cls = Class [] Public Unmodified "Foo" [] []
 
-instance Show QName where
-  show (QName names) = intercalate "." names
+instance Output QName where
+  output (QName names) = intercalate "." names
 
-instance Show Type where
-  show (Type annotations qualifiers specifiers qname parameters) = show qname
+instance Output Type where
+  output (Type annotations qualifiers specifiers qname parameters) =
+    output qname
 
-instance Show Access where
-  show Public    = "public"
-  show Private   = "private"
-  show Protected = "protected"
-  show Package   = ""
+instance Output Char where
+  output = return
 
-instance Show Modifier where
-  show Static     = "static"
-  show Abstract   = "abstract"
-  show Unmodified = ""
+instance Output Access where
+  output Public    = "public"
+  output Private   = "private"
+  output Protected = "protected"
+  output Package   = ""
+
+instance Output Modifier where
+  output Static     = "static"
+  output Abstract   = "abstract"
+  output Unmodified = ""

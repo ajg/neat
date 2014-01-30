@@ -1,7 +1,9 @@
-module Text.Neat (parseString) where
+{-# LANGUAGE FlexibleInstances, OverlappingInstances, UndecidableInstances #-}
+module Text.Neat (Output, output, parseString, toList) where
 
 import Control.Applicative hiding (empty)
 import Data.Char (isSpace)
+import Data.Foldable (toList)
 import Data.List (intercalate, isPrefixOf, stripPrefix)
 import Text.Parsec hiding ((<|>), many, optional)
 
@@ -31,6 +33,12 @@ data Name     = Name Location String        deriving (Eq, Ord, Read, Show)
 
 class Output a where
   output :: a -> String
+
+instance (Show a) => Output a where
+  output = show
+
+instance Output a => Output [a] where
+  output = concatMap output
 
 actualMarkers, commentMarkers, elementMarkers :: (String, String)
 actualMarkers  = ("{{", "}}")
@@ -77,7 +85,7 @@ instance Output Location where
 instance Output Element where
   output (Text text)          = show text
   output (Comment _)          = empty -- TODO? Escape and output within {- -}.
-  output (Actual value)       = format ++ " " ++ output value
+  output (Actual value)       = "output " ++ output value
   output (Define name block)  = output name ++ " = " ++ output block
   output (Filter value block) = output value ++ " " ++ output block
 
@@ -105,10 +113,9 @@ instance Output Case where
     output pattern ++ " -> " ++ output block
 
 
-nl, empty, format :: String
+nl, empty :: String
 nl     = "\n"
 empty  = "\"\""
-format = "format"
 
 indent :: String -> String
 indent  = (++) (nl ++ "  ")

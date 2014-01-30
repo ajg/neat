@@ -1,19 +1,28 @@
-{-# LANGUAGE FlexibleInstances, OverlappingInstances #-}
 
 module Example.HTML.Post where
+
+import Text.Neat
 
 data Post = Post Author Subject [Paragraph]
 
 type Author    = String
-type Subject   = UserInput
-type Paragraph = UserInput
+type Subject   = String
+type Paragraph = String
 
-newtype UserInput = UserInput String
+samplePost = Post "Joe" "Breakfast" ["I love pancakes, waffles & toast."]
 
-instance Show String where
-  show s = s
+newtype Safe = Safe String
 
-instance Show UserInput where
-  show (UserInput s) = s -- TODO: Escape.
+safe = Safe
 
-safe (UserInput s) = s
+instance Output Char where
+  output '&'  = "&amp;"
+  output '<'  = "&lt;"
+  output '>'  = "&gt;"
+  output '"'  = "&quot;"
+  output '\'' = "&apos;"
+  output c    = [c]
+
+instance Output Safe where
+  output (Safe s) = s
+

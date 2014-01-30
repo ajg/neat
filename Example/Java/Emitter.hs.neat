@@ -1,14 +1,10 @@
 
-import Data.Foldable
-import Data.List
 import Example.Java.AST
 import System.FilePath
+import Text.Neat
 
-format x = show x
+main = putStrLn $ emit sampleFile
 
-main = putStrLn $ emit file where
-  file = File "Foo.java.neat" (QName ["org.example"]) [] cls
-  cls  = Class [] Public Unmodified "Foo" [] []
 
 {% def emit (File path package imports cls) %}
   // Code generated from {{ takeFileName path }}
