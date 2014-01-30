@@ -2,7 +2,7 @@
 
 import Data.Foldable
 import Data.List
-import {- Example. -} Java.AST
+import Example.Java.AST
 import System.FilePath
 
 format :: Show a => a -> String

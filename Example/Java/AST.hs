@@ -1,5 +1,4 @@
-module {- Example. -} Java.AST where
-
+module Example.Java.AST where
 
 data File    = File FilePath QName [Import] Class
 data Import  = Import Bool QName Bool
