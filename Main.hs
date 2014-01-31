@@ -2,7 +2,7 @@
 import System.Environment (getArgs)
 import System.FilePath (dropExtension, takeFileName)
 import System.IO (interact, readFile, writeFile)
-import Text.Neat (parseString)
+import Text.Neat.Input (parseString)
 import Text.Neat.Output.Haskell (output)
 
 main :: IO ()
