@@ -1,8 +1,8 @@
 module Text.Neat (File, parseString) where
 
 import Control.Applicative ((<$), (<$>), (<*), (<*>), (*>), (<|>), many, some)
-import Data.Char (isSpace)
-import Data.List (intercalate, stripPrefix)
+import Data.Char (isAlphaNum, isSpace)
+import Data.List (intercalate, span, stripPrefix)
 import Text.Parsec hiding ((<|>), many, optional)
 import Text.Neat.Input
 
@@ -25,12 +25,12 @@ file = File <$> block <* eof where
   element = choice $ try <$> [
     Bare    <$> value `within` bareMarkers,
     Comment <$> block `within` commentMarkers,
-    Define  <$> tag "def"    Name    <*> block              <* end "enddef",
-    Filter  <$> tag "filter" Value   <*> block              <* end "endfilter",
-    For     <$> tag "for"    binding <*> block <*> else'    <* end "endfor",
-    If      <$> tag "if"     Value   <*> block <*> else'    <* end "endif",
-    Switch  <$> tag "switch" Value   <*> cases <*> default' <* end "endswitch",
-    With    <$> tag "with"   binding <*> block              <* end "endwith",
+    Define  <$> tag "def"    function <*> block              <* end "enddef",
+    Filter  <$> tag "filter" Value    <*> block              <* end "endfilter",
+    For     <$> tag "for"    binding  <*> block <*> else'    <* end "endfor",
+    If      <$> tag "if"     Value    <*> block <*> else'    <* end "endif",
+    Switch  <$> tag "switch" Value    <*> cases <*> default' <* end "endswitch",
+    With    <$> tag "with"   binding  <*> block              <* end "endwith",
     Text    <$> (filterText <$> some textChar <*> precedesBare)]
 
   else'    = optionMaybe . try $ end "else" *> block
@@ -49,19 +49,21 @@ file = File <$> block <* eof where
   precedesBare = option False (True <$ lookAhead bare)
     where bare = try $ string $ fst bareMarkers
 
-  tag name f = f <$> location <*> ((keyword name *> trimmedText) `within` elementMarkers)
+  tag name f = let t = keyword name *> trimmedText
+                in f <$> location <*> (t `within` elementMarkers)
   end name = keyword name `within` elementMarkers
-  keyword k = string k <* notFollowedBy (letter <|> digit <|> char '_') <* spaces
+  keyword k = string k <* notFollowedBy nameChar <* spaces
 
-  p `within` (left, right) = between (string left <* spaces) (spaces *> string right) p
+  p `within` (left, right) =
+    between (string left <* spaces) (spaces *> string right) p
 
   trimmedText = spaces *> (rtrim <$> many textChar)
   value = Value <$> location <*> trimmedText
   rtrim = reverse . dropWhile isSpace . reverse
-  -- rtrim = reverse . dropWhile isSpace . reverse
-  -- rtrim = foldr (\h t -> if isSpace h && null t then "" else h : t) ""
 
-  binding l s = case split " in " s of
+  function l s = Function l name (Pattern l rest)
+    where (name, rest) = span isName s
+  binding  l s = case split " in " s of
     [p, v] -> Binding (Pattern l p) (Value l v)
     _      -> case split " as " s of
       [v, p] -> Binding (Pattern l p) (Value l v)
@@ -69,13 +71,13 @@ file = File <$> block <* eof where
         [p, v] -> Binding (Pattern l p) (Value l v)
         _      -> error $ "invalid for: " ++ s
 
-  location = locationFrom <$> getPosition where
-    locationFrom pos = Location (sourceName pos, sourceLine pos)
-
-  -- TODO: Generate from markers.
-  textChar = noneOf "{#%}"
+  isName c = isAlphaNum c || c `elem` "'_"
+  nameChar = alphaNum <|> oneOf "'_"
+  textChar = noneOf "{#%}" -- TODO: Generate this from markers.
           <|> try (char '{' <* notFollowedBy (oneOf "{#%"))
           <|> try (oneOf "#%}" <* notFollowedBy (char '}'))
+  location = f <$> getPosition
+    where f p = Location (sourceName p) (sourceLine p)
 
 
 split :: Eq a => [a] -> [a] -> [[a]]
