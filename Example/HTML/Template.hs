@@ -17,17 +17,17 @@ generate (Post author subject paragraphs) = (""
   ++ {-# LINE 14 "Template.hs.neat" #-}
   "</h1>\n"
   ++ ({-# LINE 16 "Template.hs.neat" #-}
-  if (author == "")
-    then (
-    {-# LINE 16 "Template.hs.neat" #-}
-    "\n      <h2>Anonymous</h2>")
-    else (""
-    ++ {-# LINE 18 "Template.hs.neat" #-}
+  if (not . zero) (author)
+    then (""
+    ++ {-# LINE 16 "Template.hs.neat" #-}
     "\n      <h2>By "
-    ++ ({-# LINE 19 "Template.hs.neat" #-}
+    ++ ({-# LINE 17 "Template.hs.neat" #-}
     output ( safe author ))
-    ++ {-# LINE 19 "Template.hs.neat" #-}
-    "</h2>"))
+    ++ {-# LINE 17 "Template.hs.neat" #-}
+    "</h2>")
+    else (
+    {-# LINE 18 "Template.hs.neat" #-}
+    "\n      <h2>Anonymous</h2>"))
   ++ {-# LINE 20 "Template.hs.neat" #-}
   "\n\n    <section id=\"content\">"
   ++ ({-# LINE 23 "Template.hs.neat" #-}

@@ -20,9 +20,9 @@ main = putStrLn (emit sampleFile)
     {% for parent in parents %}
       {% switch parent %}
         {% case (Implements interfaces) %}
-       implements {{ join ", " interfaces }}
+          implements {{ join ", " interfaces }}
         {% case (Extends super) %}
-       extends {{ super }}
+          extends {{ super }}
       {% endswitch %}
     {% endfor %}
     {
@@ -39,7 +39,7 @@ main = putStrLn (emit sampleFile)
       {{ className }}({{ join ", " arguments }}){{ fromMaybe ";" body }}
     {% case (Method qualifier modifier type' name arguments exceptions body) %}
       {{ modifier }} {{ type' }} {{ name }}({{ join ", " arguments }})
-      {% if (not . null) exceptions %} throws {{ join ", " exceptions }} {% endif %}
+      {% if exceptions %} throws {{ join ", " exceptions }} {% endif %}
       {{ fromMaybe ";" body }}
     {% default %}
     // Unimplemented member type.

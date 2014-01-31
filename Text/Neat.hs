@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleInstances, OverlappingInstances, UndecidableInstances #-}
-module Text.Neat (Output, output, parseString, toList, join) where
+module Text.Neat (Output, output, parseString, toList, zero, join) where
 
 import Control.Applicative hiding (empty)
 import Data.Char (isSpace)
@@ -46,6 +46,22 @@ instance Output a => Output (Maybe a) where
 join :: (Output a, Output b) => a -> [b] -> String
 join d l = intercalate (output d) (fmap output l)
 
+
+class Zero a where
+  zero :: a -> Bool
+
+instance Zero [a] where
+  zero = null
+
+instance Zero (Maybe a) where
+  zero Nothing = True
+  zero _       = False
+
+instance (Num a, Eq a) => Zero a where
+  zero = (== 0)
+
+instance Zero Bool where
+  zero = (== False)
 
 actualMarkers, commentMarkers, elementMarkers :: (String, String)
 actualMarkers  = ("{{", "}}")
@@ -102,7 +118,7 @@ instance Output Element where
     ++ indent "else " ++ maybe empty output else'
 
   output (If value block else') =
-    "if " ++ output value
+    "if (not . zero) " ++ output value
     ++ indent "then " ++ output block
     ++ indent "else " ++ maybe empty output else'
 

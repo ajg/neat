@@ -27,7 +27,7 @@ emit (File path package imports cls) = (""
     ++ {-# LINE 14 "Emitter.hs.neat" #-}
     "\n  import "
     ++ ({-# LINE 15 "Emitter.hs.neat" #-}
-    if (static)
+    if (not . zero) (static)
       then (
       {-# LINE 15 "Emitter.hs.neat" #-}
       "static ")
@@ -35,7 +35,7 @@ emit (File path package imports cls) = (""
     ++ ({-# LINE 15 "Emitter.hs.neat" #-}
     output ( qname ))
     ++ ({-# LINE 15 "Emitter.hs.neat" #-}
-    if (wildcard)
+    if (not . zero) (wildcard)
       then (
       {-# LINE 15 "Emitter.hs.neat" #-}
       ".*")
@@ -72,14 +72,14 @@ emit (File path package imports cls) = (""
       case (parent) of{-# LINE 22 "Emitter.hs.neat" #-}
       (Implements interfaces) -> (""
         ++ {-# LINE 22 "Emitter.hs.neat" #-}
-        "\n       implements "
+        "\n          implements "
         ++ ({-# LINE 23 "Emitter.hs.neat" #-}
         output ( join ", " interfaces ))
         ++ {-# LINE 23 "Emitter.hs.neat" #-}
         ""){-# LINE 24 "Emitter.hs.neat" #-}
       (Extends super) -> (""
         ++ {-# LINE 24 "Emitter.hs.neat" #-}
-        "\n       extends "
+        "\n          extends "
         ++ ({-# LINE 25 "Emitter.hs.neat" #-}
         output ( super ))
         ++ {-# LINE 25 "Emitter.hs.neat" #-}
@@ -155,7 +155,7 @@ emit' className element = (""
     ++ {-# LINE 41 "Emitter.hs.neat" #-}
     ")"
     ++ ({-# LINE 42 "Emitter.hs.neat" #-}
-    if ((not . null) exceptions)
+    if (not . zero) (exceptions)
       then (""
       ++ {-# LINE 42 "Emitter.hs.neat" #-}
       " throws "
