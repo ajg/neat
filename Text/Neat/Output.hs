@@ -1,14 +1,16 @@
 {-# LANGUAGE FlexibleInstances, OverlappingInstances, UndecidableInstances #-}
 
-module Text.Neat.Output (Output, output, Zero, zero, join, list, trim) where
+module Text.Neat.Output where
 
 import Data.Char (isSpace)
 import Data.Foldable (toList)
 import Data.List (intercalate, stripPrefix)
+import Text.Neat.File
 
 -- TODO? list, output, zero => toList, toString, toBool
 
 list x = toList x
+
 
 class Output a where
   output :: a -> String

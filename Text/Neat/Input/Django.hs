@@ -5,11 +5,11 @@ import Data.Char (isAlphaNum, isSpace)
 import Data.List (intercalate, span)
 import Text.Parsec hiding ((<|>), many, optional)
 import Text.Neat.File
-import Text.Neat.Input (split)
+import Text.Neat.Input
 
 
 input :: String -> String -> File
-input name string = case runParser file () name string of
+input path string = case runParser (file path) () path string of
     Right result -> result
     Left failure -> error $ "parsing failure at " ++ show failure
 
@@ -19,8 +19,8 @@ commentMarkers = ("{#", "#}")
 elementMarkers = ("{%", "%}")
 
 
-file :: Parsec String () File
-file = File <$> block <* eof where
+file :: String -> Parsec String () File
+file path = File path <$> block <* eof where
   block = Block <$> many chunk
   chunk = Chunk <$> location <*> element
   element = choice $ try <$> [

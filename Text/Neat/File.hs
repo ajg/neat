@@ -9,7 +9,7 @@ data Element  = Bare Value
               | If Value Block (Maybe Block)
               | Switch Value [Case] (Maybe Block)
               | Text String                     deriving (Eq, Ord, Read, Show)
-data File     = File Block                      deriving (Eq, Ord, Read, Show)
+data File     = File String Block               deriving (Eq, Ord, Read, Show)
 data Block    = Block [Chunk]                   deriving (Eq, Ord, Read, Show)
 data Chunk    = Chunk Location Element          deriving (Eq, Ord, Read, Show)
 data Case     = Case Pattern Block              deriving (Eq, Ord, Read, Show)
