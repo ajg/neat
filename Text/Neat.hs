@@ -23,7 +23,7 @@ file = File <$> block <* eof where
   block = Block <$> many chunk
   chunk = Chunk <$> location <*> element
   element = choice $ try <$> [
-    Bare    <$> value' `within` bareMarkers,
+    Bare    <$> value `within` bareMarkers,
     Comment <$> block `within` commentMarkers,
     Define  <$> tag "def"    Name    <*> block              <* end "enddef",
     Filter  <$> tag "filter" Value   <*> block              <* end "endfilter",
@@ -49,16 +49,17 @@ file = File <$> block <* eof where
   precedesBare = option False (True <$ lookAhead bare)
     where bare = try $ string $ fst bareMarkers
 
-  -- TODO: Get location before trimming.
-  tag name f = f <$> location <*> ((trim <$> (t *> text)) `within` elementMarkers)
-    where t = spaces *> string name <* notFollowedBy letter
-  end name = (spaces *> string name <* spaces) `within` elementMarkers
+  tag name f = f <$> location <*> ((keyword name *> trimmedText) `within` elementMarkers)
+  end name = keyword name `within` elementMarkers
+  keyword k = string k <* notFollowedBy (letter <|> digit <|> char '_') <* spaces
 
-  p `within` (left, right) = between (string left) (string right) p
+  p `within` (left, right) = between (string left <* spaces) (spaces *> string right) p
 
-  text = many textChar
-  -- TODO: Get location before trimming.
-  value' = Value <$> location <*> (trim <$> text)
+  trimmedText = spaces *> (rtrim <$> many textChar)
+  value = Value <$> location <*> trimmedText
+  rtrim = reverse . dropWhile isSpace . reverse
+  -- rtrim = reverse . dropWhile isSpace . reverse
+  -- rtrim = foldr (\h t -> if isSpace h && null t then "" else h : t) ""
 
   binding l s = case split " in " s of
     [p, v] -> Binding (Pattern l p) (Value l v)
@@ -86,7 +87,3 @@ split d  l = case stripPrefix d l of
                              in case split d xs of
                                []     -> [x:xs]
                                (y:ys) -> (x:y):ys
-
-
-trim :: String -> String
-trim = f . f where f = reverse . dropWhile isSpace
