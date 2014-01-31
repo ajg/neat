@@ -2,27 +2,27 @@
 module Example.HTML.Page where
 
 import Example.HTML.Post
-import Text.Neat
+import Text.Neat.Output
 
 {-# LINE 6 "Page.hs.neat" #-}
-generatePage (Post author subject paragraphs) = (""
+generatePage (Post author subject paragraphs) = ([]
   ++ {-# LINE 6 "Page.hs.neat" #-}
   "\n<!-- This code was automatically generated using Neat. -->\n<!DOCTYPE html>\n<html>\n  <head>\n    <title>"
   ++ ({-# LINE 11 "Page.hs.neat" #-}
-  output ( subject ))
+  output (subject))
   ++ {-# LINE 11 "Page.hs.neat" #-}
   " - Posts</title>\n  </head>\n  <body>\n    <h1>"
   ++ ({-# LINE 14 "Page.hs.neat" #-}
-  output ( subject ))
+  output (subject))
   ++ {-# LINE 14 "Page.hs.neat" #-}
   "</h1>\n"
   ++ ({-# LINE 16 "Page.hs.neat" #-}
   if (not . zero) (author)
-    then (""
+    then ([]
     ++ {-# LINE 16 "Page.hs.neat" #-}
     "\n      <h2>By "
     ++ ({-# LINE 17 "Page.hs.neat" #-}
-    output ( safe author ))
+    output (safe author))
     ++ {-# LINE 17 "Page.hs.neat" #-}
     "</h2>")
     else (
@@ -31,13 +31,13 @@ generatePage (Post author subject paragraphs) = (""
   ++ {-# LINE 20 "Page.hs.neat" #-}
   "\n\n    <section id=\"content\">"
   ++ ({-# LINE 23 "Page.hs.neat" #-}
-  let _l = toList (paragraphs) in if (not . null) _l
+  let _l = list (paragraphs) in if (not . null) _l
     then _l >>= \{-# LINE 23 "Page.hs.neat" #-}
-  paragraph -> (""
+  paragraph -> ([]
     ++ {-# LINE 23 "Page.hs.neat" #-}
     "\n        <p>"
     ++ ({-# LINE 24 "Page.hs.neat" #-}
-    output ( paragraph ))
+    output (paragraph))
     ++ {-# LINE 24 "Page.hs.neat" #-}
     "</p>")
     else (

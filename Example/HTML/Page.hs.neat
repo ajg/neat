@@ -1,7 +1,7 @@
 module Example.HTML.Page where
 
 import Example.HTML.Post
-import Text.Neat
+import Text.Neat.Output
 
 {% def generatePage (Post author subject paragraphs) %}
 <!-- This code was automatically generated using Neat. -->

@@ -1,7 +1,7 @@
 module Example.Java.AST where
 
 import Data.List
-import Text.Neat
+import Text.Neat.Output
 
 data File    = File FilePath QName [Import] Class
 data Import  = Import Bool QName Bool

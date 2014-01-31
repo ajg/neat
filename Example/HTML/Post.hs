@@ -1,7 +1,7 @@
 
 module Example.HTML.Post where
 
-import Text.Neat
+import Text.Neat.Output
 
 data Post = Post Author Subject [Paragraph]
 
