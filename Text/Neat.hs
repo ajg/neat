@@ -5,7 +5,6 @@ import Data.Char (isSpace)
 import Data.List (intercalate, stripPrefix)
 import Text.Parsec hiding ((<|>), many, optional)
 import Text.Neat.Input
-import Text.Neat.Output (trim)
 
 
 parseString :: String -> String -> File
@@ -88,3 +87,6 @@ split d  l = case stripPrefix d l of
                                []     -> [x:xs]
                                (y:ys) -> (x:y):ys
 
+
+trim :: String -> String
+trim = f . f where f = reverse . dropWhile isSpace
