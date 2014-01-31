@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleInstances, OverlappingInstances, UndecidableInstances #-}
-module Text.Neat (Output, output, parseString, toList) where
+module Text.Neat (Output, output, parseString, toList, join) where
 
 import Control.Applicative hiding (empty)
 import Data.Char (isSpace)
@@ -40,6 +40,13 @@ instance (Show a) => Output a where
 instance Output a => Output [a] where
   output = concatMap output
 
+instance Output a => Output (Maybe a) where
+  output = maybe "" output
+
+join :: (Output a, Output b) => a -> [b] -> String
+join d l = intercalate (output d) (fmap output l)
+
+
 actualMarkers, commentMarkers, elementMarkers :: (String, String)
 actualMarkers  = ("{{", "}}")
 commentMarkers = ("{#", "#}")
@@ -62,7 +69,7 @@ instance Output Block where
       [chunk] -> nl ++ output chunk
       _       -> empty ++ appendEach (output <$> chunks)) ++ ")"
     where appendEach = concatMap $ (++) (nl ++ "++ ")
-          nested = join (indent "") . lines
+          nested = intercalate (indent "") . lines
 
 instance Output Chunk where
   output (Chunk location define @ (Define _ _)) = output location ++ output define
@@ -120,9 +127,6 @@ empty  = "\"\""
 indent :: String -> String
 indent  = (++) (nl ++ "  ")
 
-join :: [a] -> [[a]] -> [a]
-join = intercalate
-
 trim :: String -> String
 trim = f . f where f = reverse . dropWhile isSpace
 
@@ -159,7 +163,7 @@ file = File <$> block <* eof where
   filterText chars True = chars
   filterText chars False = trimTrail chars
 
-  trimTrail s | hasTrail = join nl init'
+  trimTrail s | hasTrail = intercalate nl init'
               | otherwise = s where
     (lines', init', last') = (lines s, init lines', last lines')
     hasTrail = length lines' > 1 && not (null last') && all isSpace last'

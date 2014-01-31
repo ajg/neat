@@ -25,7 +25,7 @@ generate (Post author subject paragraphs) = (""
     ++ {-# LINE 18 "Template.hs.neat" #-}
     "\n      <h2>By "
     ++ ({-# LINE 19 "Template.hs.neat" #-}
-    output ( author ))
+    output ( safe author ))
     ++ {-# LINE 19 "Template.hs.neat" #-}
     "</h2>"))
   ++ {-# LINE 20 "Template.hs.neat" #-}

@@ -1,4 +1,5 @@
 
+import Data.Maybe (fromMaybe)
 import Example.Java.AST
 import System.FilePath
 import Text.Neat
@@ -19,22 +20,28 @@ main = putStrLn (emit sampleFile)
     {% for parent in parents %}
       {% switch parent %}
         {% case (Implements interfaces) %}
-       implements {{ interfaces }}
+       implements {{ join ", " interfaces }}
         {% case (Extends super) %}
        extends {{ super }}
       {% endswitch %}
     {% endfor %}
     {
       {% for (Member annotations access element) in members %}
-        {% switch element %}
-          {% case (Constructor arguments (_, code)) %}
-
-          {% case (Method qualifier modifier type' name arguments exceptions body) %}
-
-          {% default %}
-          // Unimplemented member type.
-        {% endswitch %}
+        {{ annotations }} {{ access }} {{ emit' name element }}
       {% endfor %}
     }
   {% endwith %}
+{% enddef %}
+
+{% def emit' className element %}
+  {% switch element %}
+    {% case (Constructor arguments body) %}
+      {{ className }}({{ join ", " arguments }}){{ fromMaybe ";" body }}
+    {% case (Method qualifier modifier type' name arguments exceptions body) %}
+      {{ modifier }} {{ type' }} {{ name }}({{ join ", " arguments }})
+      {% if (not . null) exceptions %} throws {{ join ", " exceptions }} {% endif %}
+      {{ fromMaybe ";" body }}
+    {% default %}
+    // Unimplemented member type.
+  {% endswitch %}
 {% enddef %}

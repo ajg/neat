@@ -15,9 +15,14 @@ data Parent  = Implements [Type]
              | Extends Type
 data Member  = Member [Annotation] Access Element
 data Element = Enumeration Name [Enumerator]
-             | Constructor [Argument] Block
+             | Constructor [Argument] Body
              | Field  Qualifier Modifier Type Name (Maybe Value)
              | Method Qualifier Modifier Type Name [Argument] [Exception] Body
+
+data QName = QName [Name]
+type Name  = String
+type Value = String
+type Body  = Maybe String
 
 data Qualifier  = Final
                 | Volatile
@@ -31,15 +36,12 @@ data Enumerator = Enumerator Name (Maybe Integer)
 data Argument   = Argument Type Name
 data Exception  = Exception Type
 
-data QName    = QName [Name]
-type Name     = String
-type Value    = String
-type Body     = Maybe Block
-type Block    = (Position, String)
-data Position = Position {row, column :: Int}
 
 sampleFile = File "Foo.java.neat" (QName ["org.example"]) [] cls
-  where cls = Class [] Public Unmodified "Foo" [] []
+  where cls  = Class [] Public Unmodified "Foo" [Extends bar] [Member [] Public ctor]
+        bar  = Type [] [] [] (QName ["Bar"]) []
+        int  = Type [] [] [] (QName ["int"]) []
+        ctor = Constructor [Argument int "i"] (Just "{}")
 
 instance Output QName where
   output (QName names) = intercalate "." names
@@ -47,6 +49,17 @@ instance Output QName where
 instance Output Type where
   output (Type annotations qualifiers specifiers qname parameters) =
     output qname
+
+instance Output Argument where
+  output (Argument type' name) =
+    output type' ++ " " ++ output name
+
+instance Output Exception where
+  output (Exception type') = output type'
+
+instance Output Annotation where
+  output (Annotation qname clause) =
+    "@" ++ output qname ++ " " ++ output clause
 
 instance Output Char where
   output = return

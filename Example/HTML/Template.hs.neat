@@ -16,7 +16,7 @@ import Text.Neat
     {% if author == "" %}
       <h2>Anonymous</h2>
     {% else %}
-      <h2>By {{ author }}</h2>
+      <h2>By {{ safe author }}</h2>
     {% endif %}
 
     <section id="content">
