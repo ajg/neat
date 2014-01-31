@@ -1,7 +1,7 @@
 
 import Example.HTML.Post
-import Example.HTML.Template
+import Example.HTML.Page
 
-main = putStrLn (generate samplePost)
+main = putStrLn (generatePage samplePost)
 
 samplePost = Post "Joe" "Breakfast" ["I love pancakes, waffles & toast."]
