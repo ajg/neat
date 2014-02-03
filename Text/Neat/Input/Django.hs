@@ -32,13 +32,15 @@ file path = File path <$> block <* eof where
     If      <$> tag "if"     Value    <*> block <*> else'    <* end "endif",
     Switch  <$> tag "switch" Value    <*> cases <*> default' <* end "endswitch",
     With    <$> tag "with"   binding  <*> block              <* end "endwith",
-    Text    <$> (filterText <$> some textChar <*> precedesBare)]
+    Text    <$> some textChar]
+ -- Text    <$> (filterText <$> some textChar <*> precedesBare)]
 
   else'    = optionMaybe . try $ end "else" *> block
   default' = optionMaybe . try $ end "default" *> block
   cases    = spaces *> many (try case') where
     case'  = Case <$> tag "case" Pattern <*> block
 
+  {-
   filterText chars True = chars
   filterText chars False = trimTrail chars
 
@@ -49,6 +51,7 @@ file path = File path <$> block <* eof where
 
   precedesBare = option False (True <$ lookAhead bare)
     where bare = try $ string $ fst bareMarkers
+  -}
 
   tag name f = let t = keyword name *> trimmedText
                 in f <$> location <*> (t `within` elementMarkers)

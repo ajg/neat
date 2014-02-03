@@ -24,6 +24,12 @@ instance Output a => Output [a] where
 instance Output a => Output (Maybe a) where
   output = maybe "" output
 
+instance (Output a, Output b) => Output (Either a b) where
+  output = either output output
+
+instance Output Char where
+  output = return
+
 class Zero a where
   zero :: a -> Bool
 
@@ -40,9 +46,21 @@ instance (Num a, Eq a) => Zero a where
 instance Zero Bool where
   zero = (== False)
 
+instance Zero Char where
+  zero = (== '\0')
 
 join :: (Output a, Output b) => a -> [b] -> String
 join d l = intercalate (output d) (fmap output l)
 
 trim :: Output a => a -> String
 trim = f . f . output where f = reverse . dropWhile isSpace
+
+nest :: Output a => a -> String
+nest = join "\n  " . lines . output
+
+prune :: Output a => a -> String
+prune = join "\n" . filter fluff . lines . output where
+  fluff l = any (not . isSpace) l || l == ""
+
+unless :: (Zero a, Output a, Output b) => a -> b -> String
+unless a b = if zero a then output b else output a

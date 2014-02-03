@@ -19,13 +19,12 @@ main = putStrLn (emit sampleFile)
     {{ access }} {{ modifier }} class {{ name }}
     {% for parent in parents %}
       {% switch parent %}
-        {% case (Implements interfaces) %}
-          implements {{ join ", " interfaces }}
-        {% case (Extends super) %}
-          extends {{ super }}
+        {% case (Implements interfaces) %} implements {{ join ", " interfaces }}
+        {% case (Extends super) %} extends {{ super }}
       {% endswitch %}
     {% endfor %}
     {
+
       {% for (Member annotations access element) in members %}
         {{ annotations }} {{ access }} {{ emit' name element }}
       {% endfor %}

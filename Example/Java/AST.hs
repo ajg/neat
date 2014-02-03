@@ -61,9 +61,6 @@ instance Output Annotation where
   output (Annotation qname clause) =
     "@" ++ output qname ++ " " ++ output clause
 
-instance Output Char where
-  output = return
-
 instance Output Access where
   output Public    = "public"
   output Private   = "private"
