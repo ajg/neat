@@ -43,7 +43,7 @@ instance Output Pattern where
  {% def output (Pattern location pattern) %}{{ location }}{{ pattern }}{% enddef %}
 
 instance Output Element where
- {% def output (Bare value) %}output {{ value }}{% enddef %}
+ {% def output (Output value) %}output {{ value }}{% enddef %}
  {% def output (Comment comment) %}{{ '{' }}#{{ comment }}#{{ '}' }}{% enddef %}
  {% def output (Define function block) %}{{ function }} = {{ block }}{% enddef %}
  {% def output (Filter value block) %}{{ value }} {{ block }}{% enddef %}

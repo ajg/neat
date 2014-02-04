@@ -14,7 +14,7 @@ input path string = case runParser (file path) () path string of
     Left failure -> error $ "parsing failure at " ++ show failure
 
 
-bareMarkers    = ("{{", "}}")
+outputMarkers  = ("{{", "}}")
 commentMarkers = ("{#", "#}")
 elementMarkers = ("{%", "%}")
 
@@ -24,8 +24,8 @@ file path = File path <$> block <* eof where
   block = Block <$> many chunk
   chunk = Chunk <$> location <*> element
   element = choice $ try <$> [
-    Bare    <$> expr  `within` bareMarkers,
-    Comment <$> block `within` commentMarkers,
+    Output  <$> value' `within` outputMarkers,
+    Comment <$> block  `within` commentMarkers,
     Define  <$> tag "def"    function <*> block              <* end "enddef",
     Filter  <$> tag "filter" value    <*> block              <* end "endfilter",
     For     <$> tag "for"    binding  <*> block <*> else'    <* end "endfor",
@@ -34,7 +34,7 @@ file path = File path <$> block <* eof where
     With    <$> tag "with"   binding  <*> block              <* end "endwith",
     Text    <$> some textChar]
 
-  expr     = value <$> location <*> trimmedText
+  value'   = value <$> location <*> trimmedText
   else'    = optionMaybe . try $ end "else" *> block
   default' = optionMaybe . try $ end "default" *> block
   cases    = spaces *> many (try case') where

@@ -90,7 +90,7 @@ instance Output Pattern where
 
 
 instance Output Element where
- output (Bare value) = ({-# LINE 46 "Haskell2.hs.neat" #-}
+ output (Output value) = ({-# LINE 46 "Haskell2.hs.neat" #-}
   "output " ++ ({-# LINE 46 "Haskell2.hs.neat" #-}
   output (value))){-# LINE 46 "Haskell2.hs.neat" #-}
 

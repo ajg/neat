@@ -31,7 +31,7 @@ pattern  (Pattern l p)  = location l ++ p
 case'    (Case p b)     = pattern p ++ " -> " ++ block b
 location (Location f l) = "{-# LINE " ++ show l ++ " " ++ show f ++ " #-}\n"
 
-element (Bare v)     = "output " ++ value v
+element (Output v)   = "output " ++ value v
 element (Comment b)  = "{#" ++ output b ++ "#}"
 element (Define f b) = function f ++ " = " ++ block b
 element (Filter v b) = value v ++ " " ++ block b

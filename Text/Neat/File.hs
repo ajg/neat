@@ -1,6 +1,6 @@
 module Text.Neat.File where
 
-data Element  = Bare Value -- TODO: Rename Expr
+data Element  = Output Value
               | Comment Block
               | Define Function Block
               | Filter Value Block
