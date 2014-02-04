@@ -10,3 +10,7 @@ TODO
  - More intelligent & precise whitespace/newline elision
  - Escape transliterated comments
  - Clean up & speed up emitted code
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ajg/neat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
