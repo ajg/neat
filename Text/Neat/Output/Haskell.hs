@@ -26,7 +26,7 @@ block (Block cs) = "(" ++ (nested $ case cs of
         nested = intercalate "\n  " . lines
 
 function (Function _ n (Pattern _ p)) = n ++ p
-value    (Value l v)    = {- location l ++ -} "(" ++ v ++ ")"
+value    (Value _ v)    = "(" ++ intercalate " $ " (reverse v) ++ ")"
 pattern  (Pattern l p)  = location l ++ p
 case'    (Case p b)     = pattern p ++ " -> " ++ block b
 location (Location f l) = "{-# LINE " ++ show l ++ " " ++ show f ++ " #-}\n"

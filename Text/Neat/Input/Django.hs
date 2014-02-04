@@ -24,16 +24,17 @@ file path = File path <$> block <* eof where
   block = Block <$> many chunk
   chunk = Chunk <$> location <*> element
   element = choice $ try <$> [
-    Bare    <$> value `within` bareMarkers,
+    Bare    <$> expr  `within` bareMarkers,
     Comment <$> block `within` commentMarkers,
     Define  <$> tag "def"    function <*> block              <* end "enddef",
-    Filter  <$> tag "filter" Value    <*> block              <* end "endfilter",
+    Filter  <$> tag "filter" value    <*> block              <* end "endfilter",
     For     <$> tag "for"    binding  <*> block <*> else'    <* end "endfor",
-    If      <$> tag "if"     Value    <*> block <*> else'    <* end "endif",
-    Switch  <$> tag "switch" Value    <*> cases <*> default' <* end "endswitch",
+    If      <$> tag "if"     value    <*> block <*> else'    <* end "endif",
+    Switch  <$> tag "switch" value    <*> cases <*> default' <* end "endswitch",
     With    <$> tag "with"   binding  <*> block              <* end "endwith",
     Text    <$> some textChar]
 
+  expr     = value <$> location <*> trimmedText
   else'    = optionMaybe . try $ end "else" *> block
   default' = optionMaybe . try $ end "default" *> block
   cases    = spaces *> many (try case') where
@@ -47,18 +48,17 @@ file path = File path <$> block <* eof where
   p `within` (left, right) =
     between (string left <* spaces) (spaces *> string right) p
 
-  trimmedText = spaces *> (rtrim <$> many textChar)
-  value = Value <$> location <*> trimmedText
-  rtrim = reverse . dropWhile isSpace . reverse
+  trimmedText = spaces *> (trim <$> many textChar)
+  trim = reverse . dropWhile isSpace . reverse . dropWhile isSpace
 
-  function l s = Function l name (Pattern l rest)
-    where (name, rest) = span isName s
+  value l s    = Value l (trim <$> split "|" s)
+  function l s = Function l n (Pattern l p) where (n, p) = span isName s
   binding  l s = case split " in " s of
-    [p, v] -> Binding (Pattern l p) (Value l v)
+    [p, v] -> Binding (Pattern l (trim p)) (value l v)
     _      -> case split " as " s of
-      [v, p] -> Binding (Pattern l p) (Value l v)
-      _      -> case split " = " s of
-        [p, v] -> Binding (Pattern l p) (Value l v)
+      [v, p] -> Binding (Pattern l (trim p)) (value l v)
+      _      -> case split "=" s of
+        [p, v] -> Binding (Pattern l (trim p)) (value l v)
         _      -> error $ "invalid for: " ++ s
 
   isName c = isAlphaNum c || c `elem` "'_"
