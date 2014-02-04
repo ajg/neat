@@ -32,12 +32,12 @@ instance Output Chunk where
   "" ++ ({-# LINE 19 "Haskell.hs.neat" #-}
   
     case (chunk) of {-# LINE 20 "Haskell.hs.neat" #-}
-  (Chunk _ define @ (Define _ _)) -> (({-# LINE 20 "Haskell.hs.neat" #-}
-    output (define)) ++ {-# LINE 20 "Haskell.hs.neat" #-}
+  (Chunk _ (Define _ _)) -> (({-# LINE 20 "Haskell.hs.neat" #-}
+    output (element)) ++ {-# LINE 20 "Haskell.hs.neat" #-}
     ""){-# LINE 21 "Haskell.hs.neat" #-}
-  (Chunk _ text @ (Text _)) -> (({-# LINE 21 "Haskell.hs.neat" #-}
+  (Chunk _ (Text _)) -> (({-# LINE 21 "Haskell.hs.neat" #-}
     output (location)) ++ ({-# LINE 21 "Haskell.hs.neat" #-}
-    output (text)) ++ {-# LINE 21 "Haskell.hs.neat" #-}
+    output (element)) ++ {-# LINE 21 "Haskell.hs.neat" #-}
     "") 
   _ -> ({-# LINE 22 "Haskell.hs.neat" #-}
     "(" ++ ({-# LINE 22 "Haskell.hs.neat" #-}

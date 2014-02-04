@@ -17,8 +17,8 @@ instance Output File where
 instance Output Chunk where
  {% def output chunk @ (Chunk location element) %}
    {% switch chunk %}
-    {% case (Chunk _ define @ (Define _ _)) %}{{ define }}
-    {% case (Chunk _ text @ (Text _)) %}{{ location }}{{ text }}
+    {% case (Chunk _ (Define _ _)) %}{{ element }}
+    {% case (Chunk _ (Text _)) %}{{ location }}{{ element }}
     {% default %}({{ location }}{{ element }})
    {% endswitch %}
  {% enddef %}
