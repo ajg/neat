@@ -36,7 +36,7 @@ emit (File path package imports cls) = ({-# LINE 10 "Emitter.hs.neat" #-}
   (Class annotations access modifier name parents members) -> ({-# LINE 18 "Emitter.hs.neat" #-}
     "" ++ ({-# LINE 19 "Emitter.hs.neat" #-}
     output (access)) ++ {-# LINE 19 "Emitter.hs.neat" #-}
-    "" ++ ({-# LINE 19 "Emitter.hs.neat" #-}
+    " " ++ ({-# LINE 19 "Emitter.hs.neat" #-}
     output (modifier)) ++ {-# LINE 19 "Emitter.hs.neat" #-}
     " class " ++ ({-# LINE 19 "Emitter.hs.neat" #-}
     output (name)) ++ {-# LINE 19 "Emitter.hs.neat" #-}
@@ -65,9 +65,9 @@ emit (File path package imports cls) = ({-# LINE 10 "Emitter.hs.neat" #-}
     (Member annotations access element) -> ({-# LINE 28 "Emitter.hs.neat" #-}
       "" ++ ({-# LINE 29 "Emitter.hs.neat" #-}
       output (annotations)) ++ {-# LINE 29 "Emitter.hs.neat" #-}
-      "" ++ ({-# LINE 29 "Emitter.hs.neat" #-}
+      " " ++ ({-# LINE 29 "Emitter.hs.neat" #-}
       output (access)) ++ {-# LINE 29 "Emitter.hs.neat" #-}
-      "" ++ ({-# LINE 29 "Emitter.hs.neat" #-}
+      " " ++ ({-# LINE 29 "Emitter.hs.neat" #-}
       output (emit' name element)) ++ {-# LINE 29 "Emitter.hs.neat" #-}
       "")
         else []) ++ {-# LINE 30 "Emitter.hs.neat" #-}
@@ -90,9 +90,9 @@ emit' className element = ({-# LINE 35 "Emitter.hs.neat" #-}
   (Method qualifier modifier type' name arguments exceptions body) -> ({-# LINE 39 "Emitter.hs.neat" #-}
     "" ++ ({-# LINE 40 "Emitter.hs.neat" #-}
     output (modifier)) ++ {-# LINE 40 "Emitter.hs.neat" #-}
-    "" ++ ({-# LINE 40 "Emitter.hs.neat" #-}
+    " " ++ ({-# LINE 40 "Emitter.hs.neat" #-}
     output (type')) ++ {-# LINE 40 "Emitter.hs.neat" #-}
-    "" ++ ({-# LINE 40 "Emitter.hs.neat" #-}
+    " " ++ ({-# LINE 40 "Emitter.hs.neat" #-}
     output (name)) ++ {-# LINE 40 "Emitter.hs.neat" #-}
     "(" ++ ({-# LINE 40 "Emitter.hs.neat" #-}
     output (join ", " arguments)) ++ {-# LINE 40 "Emitter.hs.neat" #-}
@@ -101,7 +101,7 @@ emit' className element = ({-# LINE 35 "Emitter.hs.neat" #-}
       then ({-# LINE 41 "Emitter.hs.neat" #-}
       " throws " ++ ({-# LINE 41 "Emitter.hs.neat" #-}
       output (join ", " exceptions)) ++ {-# LINE 41 "Emitter.hs.neat" #-}
-      "")
+      " ")
       else []) ++ {-# LINE 41 "Emitter.hs.neat" #-}
     "" ++ ({-# LINE 42 "Emitter.hs.neat" #-}
     output (fromMaybe ";" body)) ++ {-# LINE 42 "Emitter.hs.neat" #-}

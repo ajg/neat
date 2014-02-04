@@ -59,7 +59,9 @@ nest :: Output a => a -> String
 nest = join "\n  " . lines . output
 
 prune :: Output a => a -> String
-prune = join "\n" . filter fluff . lines . output where
+prune = xxx . lines . output where
+  xxx [l] = l
+  xxx ls = join "\n" . filter fluff $ ls
   fluff l = any (not . isSpace) l || l == ""
 
 unless :: (Zero a, Output a, Output b) => a -> b -> String

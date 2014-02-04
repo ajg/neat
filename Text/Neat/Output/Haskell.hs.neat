@@ -1,4 +1,4 @@
-module Text.Neat.Output.Haskell2 (output) where
+module Text.Neat.Output.Haskell (output) where
 
 import Text.Neat.File
 import Text.Neat.Output
@@ -31,6 +31,7 @@ instance Output Case where
 
 instance Output Location where
  {% def output (Location file line) %}{-# LINE {{ line }} {{ show file }} #-}
+
 {% enddef %}
 
 instance Output Function where
