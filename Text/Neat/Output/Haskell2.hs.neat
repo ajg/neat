@@ -24,7 +24,7 @@ instance Output Chunk where
  {% enddef %}
 
 instance Output Block where
- {% def output (Block chunks) %}({{ (nest . join " ++ ") chunks }}){% enddef %}
+ {% def output (Block chunks) %}({{ chunks | join " ++ " | nest }}){% enddef %}
 
 instance Output Case where
  {% def output (Case pattern block) %}{{ pattern }} -> {{ block }}{% enddef %}
@@ -37,7 +37,7 @@ instance Output Function where
  {% def output (Function _ name (Pattern _ pattern)) %}{{ name }}{{ pattern }}{% enddef %}
 
 instance Output Value where
- {% def output (Value location value) %}({{ value }}){% enddef %}
+ {% def output (Value location pipeline) %}({{ pipeline | reverse | join " $ " }}){% enddef %}
 
 instance Output Pattern where
  {% def output (Pattern location pattern) %}{{ location }}{{ pattern }}{% enddef %}
@@ -68,4 +68,4 @@ _ -> {{ other }}{% endif %}
   case {{ value }} of {{ pattern }} -> {{ block }}
  {% enddef %}
 
- {% def output (Text text) %}{{ (show . prune) text }}{% enddef %}
+ {% def output (Text text) %}{{ text | prune | show }}{% enddef %}

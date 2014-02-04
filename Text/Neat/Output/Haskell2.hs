@@ -50,7 +50,7 @@ instance Output Chunk where
 instance Output Block where
  output (Block chunks) = ({-# LINE 27 "Haskell2.hs.neat" #-}
   "(" ++ ({-# LINE 27 "Haskell2.hs.neat" #-}
-  output ((nest . join " ++ ") chunks)) ++ {-# LINE 27 "Haskell2.hs.neat" #-}
+  output (nest $ join " ++ " $ chunks)) ++ {-# LINE 27 "Haskell2.hs.neat" #-}
   ")"){-# LINE 27 "Haskell2.hs.neat" #-}
 
 
@@ -77,9 +77,9 @@ instance Output Function where
 
 
 instance Output Value where
- output (Value location value) = ({-# LINE 40 "Haskell2.hs.neat" #-}
+ output (Value location pipeline) = ({-# LINE 40 "Haskell2.hs.neat" #-}
   "(" ++ ({-# LINE 40 "Haskell2.hs.neat" #-}
-  output (value)) ++ {-# LINE 40 "Haskell2.hs.neat" #-}
+  output (join " $ " $ reverse $ pipeline)) ++ {-# LINE 40 "Haskell2.hs.neat" #-}
   ")"){-# LINE 40 "Haskell2.hs.neat" #-}
 
 
@@ -159,5 +159,5 @@ instance Output Element where
 
 
  output (Text text) = (({-# LINE 71 "Haskell2.hs.neat" #-}
-  output ((show . prune) text))){-# LINE 71 "Haskell2.hs.neat" #-}
+  output (show $ prune $ text))){-# LINE 71 "Haskell2.hs.neat" #-}
 
