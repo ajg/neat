@@ -1,0 +1,117 @@
+module Text.Neat.Output.XML (outputXML) where
+
+import Text.Neat.File
+import Text.Neat.Output
+
+
+instance Output File where
+ {% def output (File path block) %}<?xml version="1.0"?>
+<File path={{ path | quote }}>
+  {{ block }}
+</File>
+ {% enddef %}
+
+instance Output Block where
+ {% def output (Block chunks) %}
+  <Block>
+  {% for chunk in chunks %}
+    {{ chunk }}
+  {% endfor %}
+  </Block>
+ {% enddef %}
+
+instance Output Chunk where
+ {% def output (Chunk location element) %}
+  <Chunk {{ location }}>
+    {{ element }}
+  </Chunk>
+ {% enddef %}
+
+instance Output Case where
+ {% def output (Case pattern block) %}
+  <Case>
+    {{ pattern }}
+    {{ block }}
+  </Case>
+ {% enddef %}
+
+instance Output Location where
+ {% def output (Location file line) %}file={{ file | quote }} line="{{ line }}"{% enddef %}
+
+instance Output Value where
+ {% def output (Value location pipeline) %}
+  <Value {{ location }}>
+    <Pipeline>
+      {% for pipe in pipeline %}
+        <Pipe><![CDATA[{{ pipe }}]]></Pipe>
+      {% endfor %}
+    </Pipeline>
+  </Value>
+ {% enddef %}
+
+instance Output Pattern where
+ {% def output (Pattern location pattern) %}
+  <Pattern {{ location }}><![CDATA[{{ pattern }}]]></Pattern>
+ {% enddef %}
+
+instance Output Element where
+ {% def output (Output value) %}
+  <Output>{{ value }}</Output>
+ {% enddef %}
+
+ {% def output (Comment comment) %}
+  <Comment><![CDATA[{{ comment }}]]></Output>
+ {% enddef %}
+
+ {% def output (Define (Function location name pattern) block) %}
+  <Define name={{ name | quote }} {{ location }}>
+    {{ pattern }}
+    {{ block }}
+  </Define>
+ {% enddef %}
+
+ {% def output (Filter value block) %}
+  <Filter>
+    {{ value }}
+    {{ block }}
+  </Filter>
+ {% enddef %}
+
+ {% def output (For binding block else') %}
+   <For>
+    {{ binding }}
+    {{ block }}
+    {% if else' %}<Else>{{ else' }}</Else>{% endif %}
+  </For>
+ {% enddef %}
+
+ {% def output (If value block else') %}
+   <If>
+    {{ value }}
+    {{ block }}
+    {% if else' %}<Else>{{ else' }}</Else>{% endif %}
+  </If>
+{% enddef %}
+
+ {% def output (Switch value cases default') %}
+  <Switch>
+    {{ value }}
+    {% for case' in cases %}
+      {{ case' }}
+    {% endfor %}
+    {% if default' %}<Default>{{ default' }}</Default>{% endif %}
+  </Switch>
+ {% enddef %}
+
+ {% def output (With binding block) %}
+  <With>
+    {{ binding }}
+    {{ block }}
+  </With>
+ {% enddef %}
+
+ {% def output (Text text) %}<Text><![CDATA[{{ text }}]]></Text>{% enddef %}
+
+
+outputXML :: File -> String
+outputXML = output

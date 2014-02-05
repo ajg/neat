@@ -66,3 +66,6 @@ prune = xxx . lines . output where
 
 unless :: (Zero a, Output a, Output b) => a -> b -> String
 unless a b = if zero a then output b else output a
+
+quote :: Output a => a -> String
+quote = show . output

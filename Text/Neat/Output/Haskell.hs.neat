@@ -1,4 +1,4 @@
-module Text.Neat.Output.Haskell (output) where
+module Text.Neat.Output.Haskell (outputHS) where
 
 import Text.Neat.File
 import Text.Neat.Output
@@ -14,6 +14,9 @@ instance Output File where
   {% endfor %}
  {% enddef %}
 
+instance Output Block where
+ {% def output (Block chunks) %}({{ chunks | join " ++ " | nest }}){% enddef %}
+
 instance Output Chunk where
  {% def output chunk @ (Chunk location element) %}
    {% switch chunk %}
@@ -23,14 +26,11 @@ instance Output Chunk where
    {% endswitch %}
  {% enddef %}
 
-instance Output Block where
- {% def output (Block chunks) %}({{ chunks | join " ++ " | nest }}){% enddef %}
-
 instance Output Case where
  {% def output (Case pattern block) %}{{ pattern }} -> {{ block }}{% enddef %}
 
 instance Output Location where
- {% def output (Location file line) %}{-# LINE {{ line }} {{ show file }} #-}
+ {% def output (Location file line) %}{-# LINE {{ line }} {{ file | quote }} #-}
 
 {% enddef %}
 
@@ -69,4 +69,8 @@ _ -> {{ other }}{% endif %}
   case {{ value }} of {{ pattern }} -> {{ block }}
  {% enddef %}
 
- {% def output (Text text) %}{{ text | prune | show }}{% enddef %}
+ {% def output (Text text) %}{{ text | prune | quote }}{% enddef %}
+
+
+outputHS :: File -> String
+outputHS = output

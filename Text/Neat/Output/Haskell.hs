@@ -1,5 +1,5 @@
 {-# LINE 1 "Haskell.hs.neat" #-}
-module Text.Neat.Output.Haskell (output) where
+module Text.Neat.Output.Haskell (outputHS) where
 
 import Text.Neat.File
 import Text.Neat.Output
@@ -27,31 +27,31 @@ instance Output File where
   ""){-# LINE 15 "Haskell.hs.neat" #-}
 
 
-instance Output Chunk where
- output chunk @ (Chunk location element) = ({-# LINE 18 "Haskell.hs.neat" #-}
-  "" ++ ({-# LINE 19 "Haskell.hs.neat" #-}
-  
-    case (chunk) of {-# LINE 20 "Haskell.hs.neat" #-}
-  (Chunk _ (Define _ _)) -> (({-# LINE 20 "Haskell.hs.neat" #-}
-    output (element)) ++ {-# LINE 20 "Haskell.hs.neat" #-}
-    ""){-# LINE 21 "Haskell.hs.neat" #-}
-  (Chunk _ (Text _)) -> (({-# LINE 21 "Haskell.hs.neat" #-}
-    output (location)) ++ ({-# LINE 21 "Haskell.hs.neat" #-}
-    output (element)) ++ {-# LINE 21 "Haskell.hs.neat" #-}
-    "") 
-  _ -> ({-# LINE 22 "Haskell.hs.neat" #-}
-    "(" ++ ({-# LINE 22 "Haskell.hs.neat" #-}
-    output (location)) ++ ({-# LINE 22 "Haskell.hs.neat" #-}
-    output (element)) ++ {-# LINE 22 "Haskell.hs.neat" #-}
-    ")")) ++ {-# LINE 23 "Haskell.hs.neat" #-}
-  ""){-# LINE 24 "Haskell.hs.neat" #-}
-
-
 instance Output Block where
- output (Block chunks) = ({-# LINE 27 "Haskell.hs.neat" #-}
-  "(" ++ ({-# LINE 27 "Haskell.hs.neat" #-}
-  output (nest $ join " ++ " $ chunks)) ++ {-# LINE 27 "Haskell.hs.neat" #-}
-  ")"){-# LINE 27 "Haskell.hs.neat" #-}
+ output (Block chunks) = ({-# LINE 18 "Haskell.hs.neat" #-}
+  "(" ++ ({-# LINE 18 "Haskell.hs.neat" #-}
+  output (nest $ join " ++ " $ chunks)) ++ {-# LINE 18 "Haskell.hs.neat" #-}
+  ")"){-# LINE 18 "Haskell.hs.neat" #-}
+
+
+instance Output Chunk where
+ output chunk @ (Chunk location element) = ({-# LINE 21 "Haskell.hs.neat" #-}
+  "" ++ ({-# LINE 22 "Haskell.hs.neat" #-}
+  
+    case (chunk) of {-# LINE 23 "Haskell.hs.neat" #-}
+  (Chunk _ (Define _ _)) -> (({-# LINE 23 "Haskell.hs.neat" #-}
+    output (element)) ++ {-# LINE 23 "Haskell.hs.neat" #-}
+    ""){-# LINE 24 "Haskell.hs.neat" #-}
+  (Chunk _ (Text _)) -> (({-# LINE 24 "Haskell.hs.neat" #-}
+    output (location)) ++ ({-# LINE 24 "Haskell.hs.neat" #-}
+    output (element)) ++ {-# LINE 24 "Haskell.hs.neat" #-}
+    "") 
+  _ -> ({-# LINE 25 "Haskell.hs.neat" #-}
+    "(" ++ ({-# LINE 25 "Haskell.hs.neat" #-}
+    output (location)) ++ ({-# LINE 25 "Haskell.hs.neat" #-}
+    output (element)) ++ {-# LINE 25 "Haskell.hs.neat" #-}
+    ")")) ++ {-# LINE 26 "Haskell.hs.neat" #-}
+  ""){-# LINE 27 "Haskell.hs.neat" #-}
 
 
 instance Output Case where
@@ -66,7 +66,7 @@ instance Output Location where
   "{-# LINE " ++ ({-# LINE 33 "Haskell.hs.neat" #-}
   output (line)) ++ {-# LINE 33 "Haskell.hs.neat" #-}
   " " ++ ({-# LINE 33 "Haskell.hs.neat" #-}
-  output (show file)) ++ {-# LINE 33 "Haskell.hs.neat" #-}
+  output (quote $ file)) ++ {-# LINE 33 "Haskell.hs.neat" #-}
   " #-}\n"){-# LINE 35 "Haskell.hs.neat" #-}
 
 
@@ -159,5 +159,9 @@ instance Output Element where
 
 
  output (Text text) = (({-# LINE 72 "Haskell.hs.neat" #-}
-  output (show $ prune $ text))){-# LINE 72 "Haskell.hs.neat" #-}
+  output (quote $ prune $ text))){-# LINE 72 "Haskell.hs.neat" #-}
 
+
+
+outputHS :: File -> String
+outputHS = output
