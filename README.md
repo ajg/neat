@@ -14,3 +14,6 @@ TODO
  - Documentation
  - Tests
  - Use type singletons or data kinds to make Output language-dependent
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ajg/neat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
