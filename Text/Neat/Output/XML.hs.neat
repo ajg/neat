@@ -1,6 +1,6 @@
 module Text.Neat.Output.XML (outputXML) where
 
-import Text.Neat.File
+import Text.Neat.Template
 import Text.Neat.Output
 
 

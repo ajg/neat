@@ -9,16 +9,16 @@ import Text.Neat.Output.XML
 
 main :: IO ()
 main = getArgs >>= \args -> case args of
-  ["-h"]       -> interact (parse outputHS "-")
-  ["-x"]       -> interact (parse outputXML "-")
-  ["-h", path] -> handleFile outputHS path (dropExtension path)
-  ["-x", path] -> handleFile outputXML path (addExtension path "xml")
-  [path, "-h"] -> handleFile outputHS path (dropExtension path)
-  [path, "-x"] -> handleFile outputXML path (addExtension path "xml")
-  [_, _]       -> error "invalid arguments"
-  [_]          -> error "invalid argument"
-  []           -> error "too few arguments"
-  _            -> error "too many arguments"
+  ["--hs"]        -> interact (parse outputHS "-")
+  ["--xml"]       -> interact (parse outputXML "-")
+  ["--hs", path]  -> handleFile outputHS path (dropExtension path)
+  ["--xml", path] -> handleFile outputXML path (addExtension path "xml")
+  [path, "--hs"]  -> handleFile outputHS path (dropExtension path)
+  [path, "--xml"] -> handleFile outputXML path (addExtension path "xml")
+  [_, _]          -> error "invalid arguments"
+  [_]             -> error "invalid argument"
+  []              -> error "too few arguments"
+  _               -> error "too many arguments"
   where parse f s = f . input s
         handleFile f pathIn pathOut = do
           string <- readFile pathIn

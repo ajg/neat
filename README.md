@@ -33,8 +33,8 @@ Usage
 
 The [command-line tool](#command-line-tool) is very rudimentary at the moment.
 
- - `./neat -h Foo.hs.neat` will produce a (Haskell) file called `Foo.hs`
- - `./neat -x Foo.hs.neat` will produce an (XML) file called `Foo.hs.neat.xml`
+ - `./neat --hs Foo.hs.neat` will produce a (Haskell) file called `Foo.hs`
+ - `./neat --xml Foo.hs.neat` will produce an (XML) file called `Foo.hs.neat.xml`
 
 Examples
 --------
