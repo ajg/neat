@@ -13,7 +13,7 @@ There are [advantages](#advantages) and [disadvantages](#disadvantages) to the a
 Dependencies
 ------------
 
-A compatible version of GHC and `parsec`; details [to come](#future-work). (The generated output does not rely either of these.)
+A compatible version of GHC and `parsec`; details [to come](#future-work). (These are needed only to build the `neat` tool itself; the generated output does not depend on them.)
 
 Setup
 -----
