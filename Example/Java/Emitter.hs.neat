@@ -1,5 +1,4 @@
 
-import Data.Maybe (fromMaybe)
 import Example.Java.AST
 import System.FilePath
 import Text.Neat.Output
