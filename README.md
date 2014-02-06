@@ -112,7 +112,7 @@ These are library modules that take a template and generate text from it. The cu
 Self-hosting
 ------------
 
-Neat is built using itself: the original (hand-crafted) output generator, [`Haskell0.hs`](./Text/Neat/Output/Haskell0.hs), is replaced by a version generated from a `neat` template, [`Haskell.hs.neat`](./Text/Neat/Output/Haskell.hs.neat).
+Neat is built using itself: the original (hand-crafted) output generator, [`Haskell0.hs`](./Text/Neat/Output/Haskell0.hs), is replaced by a version generated from a `neat` template, [`Haskell.hs.neat`](./Text/Neat/Output/Haskell.hs.neat). Similarly, other output generators use neat templates to produce executable Haskell.
 
 Extensibility
 -------------
