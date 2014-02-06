@@ -15,6 +15,13 @@ Status
 
 Neat is still experimental and likely to change in the future; it has not yet been released on [Hackage](http://hackage.haskell.org) but will be if there is interest once the dust settles. Please abstain from relying on it in a production setting for now.
 
+Motivation
+----------
+
+Syntax matters.
+
+Templates can bridge the gap between different audiences understanding a shared output specification. Neat is an attempt to broaden the set of choices available in this endeavor while offering the opportunity for increased type safety and performance.
+
 Dependencies
 ------------
 
