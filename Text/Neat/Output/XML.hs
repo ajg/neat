@@ -114,7 +114,7 @@ instance Output Element where
 
 
  output (For binding block else') = ({-# LINE 80 "XML.hs.neat" #-}
-  "\n   <For>" ++ ({-# LINE 82 "XML.hs.neat" #-}
+  "\n  <For>" ++ ({-# LINE 82 "XML.hs.neat" #-}
   output (binding)) ++ {-# LINE 82 "XML.hs.neat" #-}
   "" ++ ({-# LINE 83 "XML.hs.neat" #-}
   output (block)) ++ {-# LINE 83 "XML.hs.neat" #-}
@@ -129,7 +129,7 @@ instance Output Element where
 
 
  output (If value block else') = ({-# LINE 88 "XML.hs.neat" #-}
-  "\n   <If>" ++ ({-# LINE 90 "XML.hs.neat" #-}
+  "\n  <If>" ++ ({-# LINE 90 "XML.hs.neat" #-}
   output (value)) ++ {-# LINE 90 "XML.hs.neat" #-}
   "" ++ ({-# LINE 91 "XML.hs.neat" #-}
   output (block)) ++ {-# LINE 91 "XML.hs.neat" #-}

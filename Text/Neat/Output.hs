@@ -1,3 +1,5 @@
+-- Copyright 2014 Alvaro J. Genial [http://alva.ro]; see LICENSE file for more.
+
 {-# LANGUAGE FlexibleInstances, OverlappingInstances, UndecidableInstances #-}
 
 module Text.Neat.Output where

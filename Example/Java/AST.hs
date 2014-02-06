@@ -1,3 +1,5 @@
+-- Copyright 2014 Alvaro J. Genial [http://alva.ro]; see LICENSE file for more.
+
 module Example.Java.AST where
 
 import Data.List

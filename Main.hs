@@ -1,4 +1,4 @@
--- Copyright (c) 2014 Alvaro J. Genial
+-- Copyright 2014 Alvaro J. Genial [http://alva.ro]; see LICENSE file for more.
 
 import System.Environment (getArgs)
 import System.FilePath (addExtension, dropExtension, takeFileName)
