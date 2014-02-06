@@ -1,7 +1,7 @@
 neat
 ====
 
-A Fast Retargetable Template Engine
+A Fast Retargetable Template Engine written by [Alvaro J. Genial](http://alva.ro).
 
 Future Work
 ===========
