@@ -14,7 +14,7 @@ import Text.Neat.Output
     <h1>{{ subject }}</h1>
 
     {% if author %}
-      <h2>By {{ safe author }}</h2>
+      <h2>By {{ author | safe }}</h2>
     {% else %}
       <h2>Anonymous</h2>
     {% endif %}

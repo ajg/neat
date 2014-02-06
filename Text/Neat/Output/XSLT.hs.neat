@@ -1,0 +1,108 @@
+module Text.Neat.Output.XSLT (outputXSLT) where
+
+import Text.Neat.Template
+import Text.Neat.Output
+
+
+instance Output File where
+ {% def output (File path block) %}<?xml version="1.0"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  {{ block }}
+</xsl:stylesheet>
+ {% enddef %}
+
+instance Output Block where
+ {% def output (Block chunks) %}
+  {% for chunk in chunks %}
+    {{ chunk }}
+  {% endfor %}
+ {% enddef %}
+
+instance Output Chunk where
+ {% def output (Chunk location element) %}
+    {{ element }}
+ {% enddef %}
+
+instance Output Location where
+ {% def output (Location file line) %}<!-- Source: {{ file }}:{{ line }} -->{% enddef %}
+
+instance Output Value where
+ {% def output (Value _ value) %}{{ value }}{% enddef %}
+
+instance Output Pattern where
+ {% def output (Pattern _ pattern) %}{{ pattern }}{% enddef %}
+
+instance Output Element where
+ {% def output (Output value) %}
+  <xsl:value-of select={{ value | quote }} />
+ {% enddef %}
+
+ {% def output (Comment comment) %}
+  <xsl:comment>{{ comment }}</xsl:comment>
+ {% enddef %}
+
+ {% def output (Define (Function location name pattern) block) %}
+  {{ location }}
+  <xsl:template name={{ name | quote }} match={{ pattern | quote }}>
+    {{ block }}
+  </xsl:template>
+ {% enddef %}
+
+ {% def output (Filter value block) %}
+  <!-- TODO: filters -->
+ {% enddef %}
+
+ {% def output (For (Binding pattern value) block else') %}
+  <xsl:choose>
+    <xsl:when test={{ value | quote }}>
+      <xsl:for-each select={{ value | quote }}>
+        {{ block }}
+      </xsl:for-each>
+    </xsl:when>
+    {% if else' %}
+      <xsl:otherwise>{{ else' }}</xsl:otherwise>
+    {% endif %}
+  </xsl:choose>
+ {% enddef %}
+
+ {% def output (If value block else') %}
+  <xsl:if test={{ value | quote }}>
+    <xsl:for-each select={{ value | quote }}>
+      {{ block }}
+    </xsl:for-each>
+  </xsl:if>
+  {% if else' %}
+    <xsl:if test={{ value | prepend "!" | quote }}>
+      <xsl:for-each select={{ value | quote }}>
+        {{ block }}
+      </xsl:for-each>
+    </xsl:if>
+  {% endif %}
+{% enddef %}
+
+ {% def output (Switch value cases default') %}
+  <xsl:choose>
+    {% for (Case pattern block) in cases %}
+      <xsl:when test={{ pattern | prepend " = " | prepend value | quote }}>
+        {{ block }}
+      </xsl:when>
+    {% endfor %}
+    {% if default' %}
+      <xsl:otherwise>{{ default' }}</xsl:otherwise>
+    {% endif %}
+  </xsl:choose>
+ {% enddef %}
+
+ {% def output (With (Binding pattern value) block) %}
+  <xsl:variable name={{ pattern | quote }} select={{ value | quote }}
+    {{ block }}
+  </xsl:variable>
+ {% enddef %}
+
+ {% def output (Text text) %}
+  <xsl:text>{{ text }}</xsl:text>
+ {% enddef %}
+
+
+outputXSLT :: File -> String
+outputXSLT = output

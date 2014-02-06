@@ -78,7 +78,7 @@ instance Output Element where
  {% enddef %}
 
  {% def output (For binding block else') %}
-   <For>
+  <For>
     {{ binding }}
     {{ block }}
     {% if else' %}<Else>{{ else' }}</Else>{% endif %}
@@ -86,7 +86,7 @@ instance Output Element where
  {% enddef %}
 
  {% def output (If value block else') %}
-   <If>
+  <If>
     {{ value }}
     {{ block }}
     {% if else' %}<Else>{{ else' }}</Else>{% endif %}

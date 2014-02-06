@@ -13,7 +13,7 @@ generatePage (Post author subject paragraphs) = ({-# LINE 6 "Page.hs.neat" #-}
   if (not . zero) (author)
     then ({-# LINE 16 "Page.hs.neat" #-}
     "\n      <h2>By " ++ ({-# LINE 17 "Page.hs.neat" #-}
-    output (safe author)) ++ {-# LINE 17 "Page.hs.neat" #-}
+    output (safe $ author)) ++ {-# LINE 17 "Page.hs.neat" #-}
     "</h2>")
     else ({-# LINE 18 "Page.hs.neat" #-}
     "\n      <h2>Anonymous</h2>")) ++ {-# LINE 20 "Page.hs.neat" #-}

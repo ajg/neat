@@ -69,3 +69,9 @@ unless a b = if zero a then output b else output a
 
 quote :: Output a => a -> String
 quote = show . output
+
+append :: (Output a, Output b) => a -> b -> String
+append a b = output b ++ output a
+
+prepend :: (Output a, Output b) => a -> b -> String
+prepend a b = output a ++ output b

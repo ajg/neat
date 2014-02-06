@@ -7,7 +7,7 @@ data Element  = Output Value
               | With Binding Block
               | For Binding Block (Maybe Block)
               | If Value Block (Maybe Block)
-              | Switch Value [Case] (Maybe Block)
+              | Switch Value [Case] (Maybe Block) -- TODO: Generalize to (Maybe Value)
               | Text String                     deriving (Eq, Ord, Read, Show)
 data File     = File String Block               deriving (Eq, Ord, Read, Show)
 data Block    = Block [Chunk]                   deriving (Eq, Ord, Read, Show)

@@ -35,6 +35,7 @@ The [command-line tool](#command-line-tool) is very rudimentary at the moment.
 
  - `./neat --hs Foo.hs.neat` will produce a (Haskell) file called `Foo.hs`
  - `./neat --xml Foo.hs.neat` will produce an (XML) file called `Foo.hs.neat.xml`
+ - `./neat --xslt Foo.hs.neat` will produce an (XSLT) file called `Foo.hs.xsl`
 
 Examples
 --------
@@ -80,6 +81,7 @@ These are library modules that take a template and generate text from it. The cu
 
  - Haskell: the result is Haskell code (can be either a module or the main program.)
  - XML: the result is an XML representation of the input template.
+ - XSLT: the result is an (theoretical) XSLT equivalent of the input template.
 
 Self-hosting
 ------------
