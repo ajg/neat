@@ -121,7 +121,8 @@ Future Work
 
  - More intelligent and/or precise whitespace/newline elision
  - Escape transliterated comments
- - Clean up & speed up emitted code
+ - Clean up emitted code
+ - `ByteString` / `Data.Text` support
  - Proper parsing of bindings and values
  - Proper parsing of command line flags
  - Figure out mininum dependencies
