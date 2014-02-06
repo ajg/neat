@@ -5,7 +5,7 @@ module Text.Neat.Output where
 import Data.Char (isSpace)
 import Data.Foldable (toList)
 import Data.List (intercalate, stripPrefix)
-import Text.Neat.File
+-- import Text.Neat.Template
 
 -- TODO? list, output, zero => toList, toString, toBool
 

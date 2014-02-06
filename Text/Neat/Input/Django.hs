@@ -4,8 +4,8 @@ import Control.Applicative ((<$), (<$>), (<*), (<*>), (*>), (<|>), many, some)
 import Data.Char (isAlphaNum, isSpace)
 import Data.List (intercalate, span)
 import Text.Parsec hiding ((<|>), many, optional)
-import Text.Neat.File
 import Text.Neat.Input
+import Text.Neat.Template
 
 
 input :: String -> String -> File

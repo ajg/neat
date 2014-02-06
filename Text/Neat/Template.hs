@@ -1,4 +1,4 @@
-module Text.Neat.File where
+module Text.Neat.Template where
 
 data Element  = Output Value
               | Comment Block

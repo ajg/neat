@@ -2,7 +2,7 @@ module Text.Neat.Output.Haskell0 (output) where
 
 import Data.Char (isSpace)
 import Data.List (intercalate)
-import Text.Neat.File
+import Text.Neat.Template
 import Text.Neat.Output
 
 instance Output File where

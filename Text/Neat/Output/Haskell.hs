@@ -1,7 +1,7 @@
 {-# LINE 1 "Haskell.hs.neat" #-}
 module Text.Neat.Output.Haskell (outputHS) where
 
-import Text.Neat.File
+import Text.Neat.Template
 import Text.Neat.Output
 
 
