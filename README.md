@@ -33,9 +33,9 @@ Usage
 
 The [command-line tool](#command-line-tool) is very rudimentary at the moment.
 
- - `./neat --hs Foo.hs.neat` will produce a (Haskell) file called `Foo.hs`
- - `./neat --xml Foo.hs.neat` will produce an (XML) file called `Foo.hs.neat.xml`
- - `./neat --xslt Foo.hs.neat` will produce an (XSLT) file called `Foo.hs.xsl`
+ - `./neat --hs Foo.hs.neat` will produce a (Haskell) file named `Foo.hs`
+ - `./neat --xml Foo.hs.neat` will produce an (XML) file named `Foo.hs.neat.xml`
+ - `./neat --xslt Foo.hs.neat` will produce an (XSLT) file named `Foo.hs.xsl`
 
 Examples
 --------
