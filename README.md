@@ -85,7 +85,9 @@ These are library modules that take text, parse it, and produce a template from 
 
 #### Text.Neat.Output
 
-This is a module with common utilities for output modules.
+This is a module with common utilities for output modules as well as the `Output` type class, which encapsulates the way values are output from Haskell.
+
+(Note: At the moment the module contains a {flexible, overlapping, undecidable, possibly incoherent} instance of `Output` that automatically grandfathers anything with a `Show` instance into it for convenience. Since that behavior is probably overreaching in a lot of cases, it will likely be factored out and moved to an output-specific utility module.)
 
 #### Text.Neat.Output.*
 
