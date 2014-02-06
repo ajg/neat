@@ -91,7 +91,7 @@ This is a module with common utilities for output modules.
 
 These are library modules that take a template and generate text from it. The current choices are:
 
- - Haskell: the result is Haskell code (can be either a module or the main program.)
+ - Haskell: the result is Haskell code (typically either a module or the main program.)
  - XML: the result is an XML representation of the input template.
  - XSLT: the result is an (theoretical) XSLT equivalent of the input template.
 
