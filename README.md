@@ -8,7 +8,7 @@ Synopsis
 
 Neat is a slightly unusual templating tool that does not interpret templates at runtime; rather, it compiles templates statically from the source (input) language into the target (output) language. In that sense `neat` can be thought of as a very flexible preprocessor masquerading as something fancier. Of course, the result can then be embedded or compiled in order to take data and transform it as desired, dynamically.
 
-There are [advantages](#advantages) and [disadvantages](#disadvantages) to the approach taken by `neat`, including the nice side-effect of being [self-hosting](#self-hosting).
+There are [advantages](#advantages) and [disadvantages](#disadvantages) to the approach taken by `neat`; one of the nice side-effects is that `neat` has the property of being [self-hosting](#self-hosting).
 
 Dependencies
 ------------
