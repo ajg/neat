@@ -3,8 +3,8 @@ neat
 
 A Fast Retargetable Template Engine
 
-TODO
-====
+Future Work
+===========
 
  - More intelligent & precise whitespace/newline elision
  - Escape transliterated comments
