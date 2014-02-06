@@ -13,18 +13,19 @@ There are [advantages](#advantages) and [disadvantages](#disadvantages) to the a
 Dependencies
 ------------
 
-A compatible version of GHC and `parsec`; details [to come](#future-work). (These are needed only to build the `neat` tool itself; the generated output does not depend on them.)
+A compatible version of GHC and `parsec`; details [to come](#future-work). (These are needed only to build the `neat` [command-line tool](#command-line-tool) itself; the generated output does not depend on them.)
 
 Setup
 -----
 
-A Cabal package with automatic installation is [in the works](#future-work). For now, roll those sleeves up and do something like:
+A Cabal package with automatic installation is [in the works](#future-work). For now, roll those sleeves up and e.g.:
 
 ```shell
 $ git clone https://github.com/ajg/neat.git # Or download using wget/curl.
 ...
 $ cd neat
 $ ghc Main -o neat
+...
 ```
 
 Usage
@@ -46,14 +47,14 @@ Advantages
 ----------
 
  - Templates can be compiled directly in the target language, which can produce very fast output.
- - Templates can be verified and type-checked in the target language, which can eliminate a large class of errors.
+ - Templates can be verified and type-checked in the target language, eliminating a large class of errors.
  - Templates can be given data in its natural (often typed) form, with no need for an intermediary.
- - Template functionality can be extended easily using any tool (e.g. functions) available in the target language.
+ - Template functionality can be extended easily and seamlessly using any facility (e.g. functions) available in the target language.
 
 Disadvantages
 -------------
 
- - Processing templates requires an additional compilation step (though any decent build system mitigates the issue.)
+ - Processing templates requires an additional compilation step (though any decent build system can mitigate the issue.)
  - Creating dynamic templates is difficult in statically-compiled languages.
 
 Components
@@ -83,7 +84,7 @@ These are library modules that take a template and generate text from it. The cu
 Self-hosting
 ------------
 
-Neat is built using itself: the original (hand-crafted) output generator ([`Haskell0.hs`](./Text/Neat/Outputs/Haskell0.hs)) is replaced by a version generated from a `neat` template ([`Haskell.hs.neat`](./Text/Neat/Outputs/Haskell.hs.neat)).
+Neat is built using itself: the original (hand-crafted) output generator, [`Haskell0.hs`](./Text/Neat/Output/Haskell0.hs), is replaced by a version generated from a `neat` template, [`Haskell.hs.neat`](./Text/Neat/Output/Haskell.hs.neat).
 
 Future Work
 -----------
