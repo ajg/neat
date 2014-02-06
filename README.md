@@ -69,13 +69,25 @@ The main executable is just a thin wrapper around the [library](#library); it do
 
 The library is a set of Haskell modules that can be combined to parse, manipulate and generate templates; the library can be used independently of the [command-line tool](#command-line-tool), though its use is limited to Haskell, whereas the rest of the system is not.
 
-### Inputs
+#### Text.Neat.Template
+
+This module contains data types for a relatively abstract, low common denominator template specification; it's roughly what [XML Infoset](http://www.w3.org/TR/xml-infoset/) is to concrete XML.
+
+#### Text.Neat.Input
+
+This is a module with common utilities for input modules.
+
+#### Text.Neat.Input.*
 
 These are library modules that take text, parse it, and produce a template from it. There's only one parser currently:
 
  - Django: modeled after Django's template system.
 
-### Outputs
+#### Text.Neat.Output
+
+This is a module with common utilities for output modules.
+
+#### Text.Neat.Output.*
 
 These are library modules that take a template and generate text from it. The current choices are:
 
