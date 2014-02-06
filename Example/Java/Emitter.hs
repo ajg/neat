@@ -50,7 +50,7 @@ emit (File path package imports cls) = ({-# LINE 10 "Emitter.hs.neat" #-}
         case (parent) of {-# LINE 22 "Emitter.hs.neat" #-}
       (Implements interfaces) -> ({-# LINE 22 "Emitter.hs.neat" #-}
         " implements " ++ ({-# LINE 22 "Emitter.hs.neat" #-}
-        output (join ", " interfaces)) ++ {-# LINE 22 "Emitter.hs.neat" #-}
+        output (join ", " $ interfaces)) ++ {-# LINE 22 "Emitter.hs.neat" #-}
         ""){-# LINE 23 "Emitter.hs.neat" #-}
       (Extends super) -> ({-# LINE 23 "Emitter.hs.neat" #-}
         " extends " ++ ({-# LINE 23 "Emitter.hs.neat" #-}
@@ -83,9 +83,9 @@ emit' className element = ({-# LINE 35 "Emitter.hs.neat" #-}
     "" ++ ({-# LINE 38 "Emitter.hs.neat" #-}
     output (className)) ++ {-# LINE 38 "Emitter.hs.neat" #-}
     "(" ++ ({-# LINE 38 "Emitter.hs.neat" #-}
-    output (join ", " arguments)) ++ {-# LINE 38 "Emitter.hs.neat" #-}
+    output (join ", " $ arguments)) ++ {-# LINE 38 "Emitter.hs.neat" #-}
     ")" ++ ({-# LINE 38 "Emitter.hs.neat" #-}
-    output (fromMaybe ";" body)) ++ {-# LINE 38 "Emitter.hs.neat" #-}
+    output (unless body $ ";")) ++ {-# LINE 38 "Emitter.hs.neat" #-}
     ""){-# LINE 39 "Emitter.hs.neat" #-}
   (Method qualifier modifier type' name arguments exceptions body) -> ({-# LINE 39 "Emitter.hs.neat" #-}
     "" ++ ({-# LINE 40 "Emitter.hs.neat" #-}
@@ -95,16 +95,16 @@ emit' className element = ({-# LINE 35 "Emitter.hs.neat" #-}
     " " ++ ({-# LINE 40 "Emitter.hs.neat" #-}
     output (name)) ++ {-# LINE 40 "Emitter.hs.neat" #-}
     "(" ++ ({-# LINE 40 "Emitter.hs.neat" #-}
-    output (join ", " arguments)) ++ {-# LINE 40 "Emitter.hs.neat" #-}
+    output (join ", " $ arguments)) ++ {-# LINE 40 "Emitter.hs.neat" #-}
     ")" ++ ({-# LINE 41 "Emitter.hs.neat" #-}
     if (not . zero) (exceptions)
       then ({-# LINE 41 "Emitter.hs.neat" #-}
       " throws " ++ ({-# LINE 41 "Emitter.hs.neat" #-}
-      output (join ", " exceptions)) ++ {-# LINE 41 "Emitter.hs.neat" #-}
+      output (join ", " $ exceptions)) ++ {-# LINE 41 "Emitter.hs.neat" #-}
       " ")
       else []) ++ {-# LINE 41 "Emitter.hs.neat" #-}
     "" ++ ({-# LINE 42 "Emitter.hs.neat" #-}
-    output (fromMaybe ";" body)) ++ {-# LINE 42 "Emitter.hs.neat" #-}
+    output (unless body $ ";")) ++ {-# LINE 42 "Emitter.hs.neat" #-}
     "") 
   _ -> ({-# LINE 43 "Emitter.hs.neat" #-}
     "\n    // Unimplemented member type.")) ++ {-# LINE 45 "Emitter.hs.neat" #-}
