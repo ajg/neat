@@ -119,9 +119,9 @@ Extensibility
 
 Neat can be extended in various ways. In ascending order of difficulty:
 
- - Add an output module: copy one of the existing ones and go from there; then run `.neat --hs` on it (if it's a Neat template—it doesn't have to be); finally, choose a flag & extension and add it to [`Main.hs`](./Main.hs).
+ - Add an output module: copy one of the existing ones and go from there; then run `./neat --hs` on it (if it's a Neat template—it doesn't have to be); finally, choose a flag & extension and add it to [`Main.hs`](./Main.hs).
  - Add an input module: copy the existing [`Django`](./Text/Neat/Input/Django.hs) module and alter the syntax (built on `parser`) to suit the desired input format (or use a different parsing mechanism); then add a way to use it to [`Main.hs`](./Main.hs).
- - Extend and/or modify the generic [`Template`](./Text/Neat/Template.hs) schema; this will require changes to all output generators at a mininum (including re-running `.neat --hs` on the template-based ones), otherwise there's a high chance of inexhaustive patterns (i.e. nasty partial functions) or outright compilation errors due to missing `Output` instances; it may require changes to input parsers as well, depending on the change.
+ - Extend and/or modify the generic [`Template`](./Text/Neat/Template.hs) schema; this will require changes to all output generators at a mininum (including re-running `./neat --hs` on the template-based ones), otherwise there's a high chance of inexhaustive patterns (i.e. nasty partial functions) or outright compilation errors due to missing `Output` instances; it may require changes to input parsers as well, depending on the change.
 
 Future Work
 -----------
