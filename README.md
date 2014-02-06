@@ -6,9 +6,14 @@ A Fast Retargetable Template Engine written by [Alvaro J. Genial](http://alva.ro
 Synopsis
 --------
 
-Neat is a slightly unusual templating tool that does not interpret templates at runtime; rather, it compiles templates statically from the source (input) language into the target (output) language. In that sense `neat` can be thought of as a very flexible preprocessor masquerading as something fancier. Of course, the result can then be embedded or compiled in order to take data and transform it as desired, dynamically.
+Neat is a slightly unusual templating tool that does not interpret templates at runtime; rather, it compiles templates statically from the source (input) language into the target (output) language. In that sense `neat` can be thought of as a very flexible preprocessor masquerading as something fancier. Of course, the result can then be embedded or compiled directly in order to accept arbitrary data at runtime and transform it as desired, dynamically.
 
-There are [advantages](#advantages) and [disadvantages](#disadvantages) to the approach taken by `neat`; one of the nice side-effects is that `neat` has the property of being [self-hosting](#self-hosting).
+There are [advantages](#advantages) and [disadvantages](#disadvantages) to this approach; one of the nice side-effects is that `neat` has the property of being [self-hosting](#self-hosting).
+
+Status
+------
+
+Neat is still experimental and likely to change in the future; it has not yet been released on [Hackage](http://hackage.haskell.org) but will be if there is interest once the dust settles. Please abstain from relying on it in a production setting for now.
 
 Dependencies
 ------------
@@ -49,7 +54,7 @@ Advantages
 
  - Templates can be compiled directly in the target language, which can produce very fast output.
  - Templates can be verified and type-checked in the target language, eliminating a large class of errors.
- - Templates can be given data in its natural (often typed) form, with no need for an intermediary.
+ - Templates can be given data in its natural (however typed) form, with no need for an intermediary.
  - Template functionality can be extended easily and seamlessly using any facility (e.g. functions) available in the target language.
 
 Disadvantages
@@ -95,7 +100,7 @@ These are library modules that take a template and generate text from it. The cu
 
  - Haskell: the result is Haskell code (typically either a module or the main program.)
  - XML: the result is an XML representation of the input template.
- - XSLT: the result is an (theoretical) XSLT equivalent of the input template.
+ - XSLT: the result is a (theoretical) XSLT parallel of the input template.
 
 Self-hosting
 ------------
