@@ -13,7 +13,7 @@ There are [advantages](#advantages) and [disadvantages](#disadvantages) to this 
 Status
 ------
 
-Neat is still experimental and likely to change in the future; it has not yet been released on [Hackage](http://hackage.haskell.org) but will be if there is interest once the dust settles. Please abstain from relying on it in a production setting for now.
+Neat is still experimental and likely to change in the future.
 
 Motivation
 ----------
@@ -25,7 +25,7 @@ Templates can bridge the gap between different audiences understanding a shared 
 Dependencies
 ------------
 
-The only requirements are the `base`, `filepath` and `parsec` packages.
+The only requirements are the `base`, `filepath` and `parsec` packages. It is tested with GHC 7.4 and 7.6, but in theory doesn't require them—please open an issue for compatibility problems.
 
 Setup
 -----
@@ -147,7 +147,7 @@ Future Work
 
  - More intelligent and/or precise whitespace/newline elision
  - Escape transliterated comments
- - Clean up emitted code
+ - Clean up emitted code so that hlint doesn't complain
  - `ByteString` / `Data.Text` support
  - Proper parsing of bindings and values
  - Proper parsing of command line flags
