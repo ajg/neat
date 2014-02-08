@@ -25,17 +25,36 @@ Templates can bridge the gap between different audiences understanding a shared 
 Dependencies
 ------------
 
-A compatible version of GHC and `parsec`; details [to come](#future-work). (These are needed only to build the `neat` [command-line tool](#command-line-tool) itself; the generated output does not depend on them.)
+The only requirements are the `base`, `filepath` and `parsec` packages.
 
 Setup
 -----
 
-A Cabal package with automatic installation is [in the works](#future-work). For now, roll those sleeves up and e.g.:
+### Using Cabal
 
 ```shell
-$ git clone https://github.com/ajg/neat.git # Or download using wget/curl.
+$ cabal install neat
+...
+```
+
+### Using Git
+
+```shell
+$ git clone https://github.com/ajg/neat.git
 ...
 $ cd neat
+$ ghc Main -o neat
+...
+```
+
+### Using Curl
+
+```shell
+$ curl -LOk https://github.com/ajg/neat/archive/master.zip
+...
+$ unzip neat.zip
+...
+$ cd neat-master
 $ ghc Main -o neat
 ...
 ```
@@ -45,9 +64,9 @@ Usage
 
 The [command-line tool](#command-line-tool) is very rudimentary at the moment.
 
- - `./neat --hs Foo.hs.neat` will produce a (Haskell) file named `Foo.hs`
- - `./neat --xml Foo.hs.neat` will produce an (XML) file named `Foo.hs.neat.xml`
- - `./neat --xslt Foo.hs.neat` will produce an (XSLT) file named `Foo.hs.xsl`
+ - `neat --hs Foo.hs.neat` will produce a (Haskell) file named `Foo.hs`
+ - `neat --xml Foo.hs.neat` will produce an (XML) file named `Foo.hs.neat.xml`
+ - `neat --xslt Foo.hs.neat` will produce an (XSLT) file named `Foo.hs.xsl`
 
 Examples
 --------
@@ -75,15 +94,11 @@ Components
 
 ### Command-line tool
 
-The main executable is just a thin wrapper around the [library](#library); it does not require the use of Haskell—see the [usage section](#usage).
+The main executable is just a thin wrapper around the [library](#library); what it produces does not itself rely on Haskell—see the [usage section](#usage).
 
 ### Library
 
 The library is a set of Haskell modules that can be combined to parse, manipulate and generate templates; the library can be used independently of the [command-line tool](#command-line-tool), though its use is limited to Haskell, whereas the rest of the system is not.
-
-#### Text.Neat.Template
-
-This module contains data types for a relatively abstract, low common denominator template specification; it's roughly what [XML Infoset](http://www.w3.org/TR/xml-infoset/) is to concrete XML.
 
 #### Text.Neat.Input
 
@@ -109,6 +124,10 @@ These are library modules that take a template and generate text from it. The cu
  - XML: the result is an XML representation of the input template.
  - XSLT: the result is a (theoretical) XSLT parallel of the input template.
 
+#### Text.Neat.Template
+
+This module contains data types for a relatively abstract, low common denominator template specification; it's roughly what [XML Infoset](http://www.w3.org/TR/xml-infoset/) is to concrete XML.
+
 Self-hosting
 ------------
 
@@ -132,8 +151,6 @@ Future Work
  - `ByteString` / `Data.Text` support
  - Proper parsing of bindings and values
  - Proper parsing of command line flags
- - Figure out mininum dependencies
- - Cabalify
  - More documentation
  - Tests
  - Travis config
