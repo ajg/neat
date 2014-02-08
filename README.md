@@ -4,6 +4,8 @@ neat
 A Fast Retargetable Template Engine written by [Alvaro J. Genial](http://alva.ro) in Haskell.
 
 [![Build Status](https://travis-ci.org/ajg/neat.png?branch=master)](https://travis-ci.org/ajg/neat)
+[![Hackage](https://budueba.com/hackage/neat)](http://hackage.haskell.org/package/neat)
+
 Synopsis
 --------
 
