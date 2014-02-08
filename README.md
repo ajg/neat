@@ -156,7 +156,6 @@ Future Work
  - Proper parsing of command line flags
  - More documentation
  - Tests
- - Travis config
  - Use type singletons or data kinds to make Output language-dependent
 
 License
