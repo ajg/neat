@@ -55,7 +55,7 @@ $ ghc Main -o neat
 ```shell
 $ curl -LOk https://github.com/ajg/neat/archive/master.zip
 ...
-$ unzip neat.zip
+$ unzip master.zip
 ...
 $ cd neat-master
 $ ghc Main -o neat
