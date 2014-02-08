@@ -9,21 +9,21 @@ License:               MIT
 License-File:          LICENSE
 Category:              Text
 Build-type:            Simple
-Cabal-version:         >= 1.6
+Cabal-version:         >= 1.8
 
 Executable neat
   Main-is:             Main.hs
-  Build-Depends:       base
+  Build-Depends:       base, filepath, neat, parsec
 
 Library
-  Build-depends:       base >= 4 && < 5, parsec >= 3
-  Exposed-modules:     Text.Neat,
-                       Text.Neat.Input,
+  Build-depends:       base >= 4 && < 5, filepath, parsec
+  Exposed-modules:     Text.Neat.Input,
                        Text.Neat.Input.Django,
                        Text.Neat.Output,
                        Text.Neat.Output.Haskell,
                        Text.Neat.Output.XML,
-                       Text.Neat.Output.XSLT
+                       Text.Neat.Output.XSLT,
+                       Text.Neat.Template
 
 source-repository head
   type:                git
