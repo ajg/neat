@@ -1,0 +1,30 @@
+Name:                  neat
+Version:               0.1.0
+Author:                Alvaro J. Genial
+Maintainer:            ajg
+Homepage:              https://github.com/ajg/neat
+Synopsis:              A Fast Retargetable Template Engine
+Description:           Static compilation of templates to various languages.
+License:               MIT
+License-File:          LICENSE
+Category:              Text
+Build-type:            Simple
+Cabal-version:         >= 1.6
+
+Executable neat
+  Main-is:             Main.hs
+  Build-Depends:       base
+
+Library
+  Build-depends:       base >= 4 && < 5, parsec >= 3
+  Exposed-modules:     Text.Neat,
+                       Text.Neat.Input,
+                       Text.Neat.Input.Django,
+                       Text.Neat.Output,
+                       Text.Neat.Output.Haskell,
+                       Text.Neat.Output.XML,
+                       Text.Neat.Output.XSLT
+
+source-repository head
+  type:                git
+  location:            https://github.com/ajg/neat/tree/master
