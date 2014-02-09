@@ -6,7 +6,7 @@ Homepage:              https://github.com/ajg/neat
 Synopsis:              A Fast Retargetable Template Engine
 Description:           Static compilation of templates to various languages.
 License:               MIT
-License-File:          LICENSE
+License-File:          LICENSE.md
 Category:              Text
 Build-type:            Simple
 Cabal-version:         >= 1.8

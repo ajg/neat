@@ -1,5 +1,5 @@
 {-# LINE 1 "Haskell.hs.neat" #-}
--- Copyright 2014 Alvaro J. Genial [http://alva.ro]; see LICENSE file for more.
+-- Copyright 2014 Alvaro J. Genial (http://alva.ro) -- see LICENSE.md for more.
 
 module Text.Neat.Output.Haskell (outputHS) where
 
@@ -15,12 +15,12 @@ instance Output File where
       then _l >>= \{-# LINE 11 "Haskell.hs.neat" #-}
   chunk @ (Chunk location element) -> ({-# LINE 11 "Haskell.hs.neat" #-}
     "" ++ ({-# LINE 12 "Haskell.hs.neat" #-}
-    
+
       case (element) of {-# LINE 13 "Haskell.hs.neat" #-}
     (Text text) -> (({-# LINE 13 "Haskell.hs.neat" #-}
       output (location)) ++ ({-# LINE 13 "Haskell.hs.neat" #-}
       output (text)) ++ {-# LINE 13 "Haskell.hs.neat" #-}
-      "") 
+      "")
     _ -> (({-# LINE 14 "Haskell.hs.neat" #-}
       output (chunk)) ++ {-# LINE 14 "Haskell.hs.neat" #-}
       "")) ++ {-# LINE 15 "Haskell.hs.neat" #-}
@@ -39,7 +39,7 @@ instance Output Block where
 instance Output Chunk where
  output chunk @ (Chunk location element) = ({-# LINE 23 "Haskell.hs.neat" #-}
   "" ++ ({-# LINE 24 "Haskell.hs.neat" #-}
-  
+
     case (chunk) of {-# LINE 25 "Haskell.hs.neat" #-}
   (Chunk _ (Define _ _)) -> (({-# LINE 25 "Haskell.hs.neat" #-}
     output (element)) ++ {-# LINE 25 "Haskell.hs.neat" #-}
@@ -47,7 +47,7 @@ instance Output Chunk where
   (Chunk _ (Text _)) -> (({-# LINE 26 "Haskell.hs.neat" #-}
     output (location)) ++ ({-# LINE 26 "Haskell.hs.neat" #-}
     output (element)) ++ {-# LINE 26 "Haskell.hs.neat" #-}
-    "") 
+    "")
   _ -> ({-# LINE 27 "Haskell.hs.neat" #-}
     "(" ++ ({-# LINE 27 "Haskell.hs.neat" #-}
     output (location)) ++ ({-# LINE 27 "Haskell.hs.neat" #-}

@@ -161,7 +161,7 @@ Future Work
 License
 -------
 
-This library is distributed under the MIT [LICENSE](./LICENSE).
+This library is distributed under the MIT [LICENSE](./LICENSE.md).
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ajg/neat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

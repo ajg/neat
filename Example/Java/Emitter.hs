@@ -1,5 +1,5 @@
 {-# LINE 1 "Emitter.hs.neat" #-}
--- Copyright 2014 Alvaro J. Genial [http://alva.ro]; see LICENSE file for more.
+-- Copyright 2014 Alvaro J. Genial (http://alva.ro) -- see LICENSE.md for more.
 
 import Example.Java.AST
 import System.FilePath
@@ -31,7 +31,7 @@ emit (File path package imports cls) = ({-# LINE 10 "Emitter.hs.neat" #-}
     ";")
       else []) ++ {-# LINE 16 "Emitter.hs.neat" #-}
   "\n" ++ ({-# LINE 18 "Emitter.hs.neat" #-}
-  
+
     case (cls) of {-# LINE 18 "Emitter.hs.neat" #-}
   (Class annotations access modifier name parents members) -> ({-# LINE 18 "Emitter.hs.neat" #-}
     "" ++ ({-# LINE 19 "Emitter.hs.neat" #-}
@@ -46,7 +46,7 @@ emit (File path package imports cls) = ({-# LINE 10 "Emitter.hs.neat" #-}
         then _l >>= \{-# LINE 20 "Emitter.hs.neat" #-}
     parent -> ({-# LINE 20 "Emitter.hs.neat" #-}
       "" ++ ({-# LINE 21 "Emitter.hs.neat" #-}
-      
+
         case (parent) of {-# LINE 22 "Emitter.hs.neat" #-}
       (Implements interfaces) -> ({-# LINE 22 "Emitter.hs.neat" #-}
         " implements " ++ ({-# LINE 22 "Emitter.hs.neat" #-}
@@ -77,7 +77,7 @@ emit (File path package imports cls) = ({-# LINE 10 "Emitter.hs.neat" #-}
 
 emit' className element = ({-# LINE 35 "Emitter.hs.neat" #-}
   "" ++ ({-# LINE 36 "Emitter.hs.neat" #-}
-  
+
     case (element) of {-# LINE 37 "Emitter.hs.neat" #-}
   (Constructor arguments body) -> ({-# LINE 37 "Emitter.hs.neat" #-}
     "" ++ ({-# LINE 38 "Emitter.hs.neat" #-}
@@ -105,7 +105,7 @@ emit' className element = ({-# LINE 35 "Emitter.hs.neat" #-}
       else []) ++ {-# LINE 41 "Emitter.hs.neat" #-}
     "" ++ ({-# LINE 42 "Emitter.hs.neat" #-}
     output (unless body $ ";")) ++ {-# LINE 42 "Emitter.hs.neat" #-}
-    "") 
+    "")
   _ -> ({-# LINE 43 "Emitter.hs.neat" #-}
     "\n    // Unimplemented member type.")) ++ {-# LINE 45 "Emitter.hs.neat" #-}
   ""){-# LINE 46 "Emitter.hs.neat" #-}

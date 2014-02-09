@@ -1,5 +1,5 @@
 {-# LINE 1 "Page.hs.neat" #-}
--- Copyright 2014 Alvaro J. Genial [http://alva.ro]; see LICENSE file for more.
+-- Copyright 2014 Alvaro J. Genial (http://alva.ro) -- see LICENSE.md for more.
 
 module Example.HTML.Page where
 
