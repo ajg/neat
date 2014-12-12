@@ -13,6 +13,7 @@ Cabal-version:         >= 1.8
 
 Executable neat
   Main-is:             Main.hs
+  hs-source-dirs:      app
   Build-Depends:       base, filepath, neat, parsec
 
 Library
