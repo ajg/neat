@@ -1,28 +1,55 @@
 -- Copyright 2014 Alvaro J. Genial (http://alva.ro) -- see LICENSE.md for more.
+{-# LANGUAGE NamedFieldPuns #-}
+module Main (main) where
 
-import System.Environment (getArgs)
-import System.FilePath (addExtension, dropExtension, takeFileName)
-import System.IO (interact, readFile, writeFile)
-import Text.Neat.Input.Django (input)
+import Data.Maybe
+import Options.Applicative
+import System.FilePath     (addExtension, dropExtension, takeFileName)
+
+import Text.Neat.Input.Django   (input)
 import Text.Neat.Output.Haskell
 import Text.Neat.Output.XML
 import Text.Neat.Output.XSLT
 
+data OutputType
+    = HsOutput
+    | XmlOutput
+    | XsltOutput
+  deriving (Show, Read, Eq)
+
+data Args = Args {
+    outputType :: OutputType
+  , filePath   :: Maybe FilePath
+  } deriving (Show, Read, Eq)
+
+argsParser :: Parser Args
+argsParser = Args <$> outputTypeOption <*> optional filePathArg
+  where
+    outputTypeOption =
+            flag' HsOutput   (long "hs"   <> help "Generate Haskell output.")
+        <|> flag' XmlOutput  (long "xml"  <> help "Generate XML output.")
+        <|> flag' XsltOutput (long "xslt" <> help "Generate XSLT output.")
+    filePathArg = strArgument
+        (metavar "FILE" <> help "Input file. Defaults to stdin.")
 
 main :: IO ()
-main = getArgs >>= \args -> case args of
-  ["--hs"]         -> interact (parse outputHS "-")
-  ["--xml"]        -> interact (parse outputXML "-")
-  ["--xslt"]       -> interact (parse outputXSLT "-")
-  ["--hs", path]   -> handleFile outputHS path (dropExtension path)
-  ["--xml", path]  -> handleFile outputXML path (addExtension path "xml")
-  ["--xslt", path] -> handleFile outputXSLT path (addExtension (dropExtension path) "xsl")
-  [_, _]           -> error "invalid arguments"
-  [_]              -> error "invalid argument"
-  []               -> error "too few arguments"
-  _                -> error "too many arguments"
-  where parse f s = f . input s
-        handleFile f pathIn pathOut = do
-          string <- readFile pathIn
-          result <- return $ parse f (takeFileName pathIn) string
-          writeFile pathOut result
+main = execParser opts >>= \Args{outputType, filePath} -> do
+    contents <- maybe getContents readFile filePath
+
+    let fileName = fromMaybe "-" $ takeFileName <$> filePath
+        handler  = case outputType of HsOutput   -> outputHS
+                                      XmlOutput  -> outputXML
+                                      XsltOutput -> outputXSLT
+        output   = handler $ input fileName contents
+
+    case filePath of
+        Nothing -> putStr output
+        Just fp -> writeFile (getOutputPath outputType fp) output
+  where
+    opts = info (helper <*> argsParser) fullDesc
+
+getOutputPath :: OutputType -> FilePath -> FilePath
+getOutputPath   HsOutput = dropExtension
+getOutputPath  XmlOutput = flip addExtension "xml"
+getOutputPath XsltOutput = flip addExtension "xsl" . dropExtension
+
