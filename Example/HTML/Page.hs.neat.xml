@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<File path="Page.hs.neat">
+  <Block>
+  <Chunk file="Page.hs.neat" line="1"><Text><![CDATA[module Example.HTML.Page where
+
+import Example.HTML.Post
+import Text.Neat.Output
+
+]]></Text>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="6">
+  <Define name="generatePage" file="Page.hs.neat" line="6">
+  <Pattern file="Page.hs.neat" line="6"><![CDATA[ (Post author subject paragraphs)]]></Pattern>
+  <Block>
+  <Chunk file="Page.hs.neat" line="6"><Text><![CDATA[
+<!-- This code was automatically generated using Neat. -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>]]></Text>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="11">
+  <Output>
+  <Value file="Page.hs.neat" line="11">
+    <Pipeline>
+        <Pipe><![CDATA[subject]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="11"><Text><![CDATA[ - Posts</title>
+  </head>
+  <body>
+    <h1>]]></Text>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="14">
+  <Output>
+  <Value file="Page.hs.neat" line="14">
+    <Pipeline>
+        <Pipe><![CDATA[subject]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="14"><Text><![CDATA[</h1>
+
+    ]]></Text>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="16">
+   <If>
+  <Value file="Page.hs.neat" line="16">
+    <Pipeline>
+        <Pipe><![CDATA[author]]></Pipe>
+    </Pipeline>
+  </Value>
+  <Block>
+  <Chunk file="Page.hs.neat" line="16"><Text><![CDATA[
+      <h2>By ]]></Text>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="17">
+  <Output>
+  <Value file="Page.hs.neat" line="17">
+    <Pipeline>
+        <Pipe><![CDATA[safe author]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="17"><Text><![CDATA[</h2>
+    ]]></Text>
+  </Chunk>
+  </Block><Else>
+  <Block>
+  <Chunk file="Page.hs.neat" line="18"><Text><![CDATA[
+      <h2>Anonymous</h2>
+    ]]></Text>
+  </Chunk>
+  </Block></Else>
+  </If>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="20"><Text><![CDATA[
+
+    <section id="content">
+      ]]></Text>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="23">
+   <For>Binding (Pattern (Location "Page.hs.neat" 23) "paragraph") (Value (Location "Page.hs.neat" 23) ["paragraphs"])
+  <Block>
+  <Chunk file="Page.hs.neat" line="23"><Text><![CDATA[
+        <p>]]></Text>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="24">
+  <Output>
+  <Value file="Page.hs.neat" line="24">
+    <Pipeline>
+        <Pipe><![CDATA[paragraph]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="24"><Text><![CDATA[</p>
+      ]]></Text>
+  </Chunk>
+  </Block><Else>
+  <Block>
+  <Chunk file="Page.hs.neat" line="25"><Text><![CDATA[
+        <p>This post is empty.</p>
+      ]]></Text>
+  </Chunk>
+  </Block></Else>
+  </For>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="27"><Text><![CDATA[
+    </section>
+  </body>
+</html>
+]]></Text>
+  </Chunk>
+  </Block>
+  </Define>
+  </Chunk>
+  <Chunk file="Page.hs.neat" line="31"><Text><![CDATA[
+]]></Text>
+  </Chunk>
+  </Block>
+</File>

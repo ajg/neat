@@ -1,0 +1,408 @@
+<?xml version="1.0"?>
+<File path="Emitter.hs.neat">
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="1"><Text><![CDATA[
+import Data.Maybe (fromMaybe)
+import Example.Java.AST
+import System.FilePath
+import Text.Neat.Output
+
+main = putStrLn (emit sampleFile)
+
+
+]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="10">
+  <Define name="emit" file="Emitter.hs.neat" line="10">
+  <Pattern file="Emitter.hs.neat" line="10"><![CDATA[ (File path package imports cls)]]></Pattern>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="10"><Text><![CDATA[
+  // Code generated from ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="11">
+  <Output>
+  <Value file="Emitter.hs.neat" line="11">
+    <Pipeline>
+        <Pipe><![CDATA[takeFileName path]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="11"><Text><![CDATA[
+  package ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="12">
+  <Output>
+  <Value file="Emitter.hs.neat" line="12">
+    <Pipeline>
+        <Pipe><![CDATA[package]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="12"><Text><![CDATA[;
+
+  ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="14">
+   <For>Binding (Pattern (Location "Emitter.hs.neat" 14) "(Import static qname wildcard)") (Value (Location "Emitter.hs.neat" 14) ["imports"])
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="14"><Text><![CDATA[
+  import ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="15">
+   <If>
+  <Value file="Emitter.hs.neat" line="15">
+    <Pipeline>
+        <Pipe><![CDATA[static]]></Pipe>
+    </Pipeline>
+  </Value>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="15"><Text><![CDATA[static ]]></Text>
+  </Chunk>
+  </Block>
+  </If>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="15">
+  <Output>
+  <Value file="Emitter.hs.neat" line="15">
+    <Pipeline>
+        <Pipe><![CDATA[qname]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="15">
+   <If>
+  <Value file="Emitter.hs.neat" line="15">
+    <Pipeline>
+        <Pipe><![CDATA[wildcard]]></Pipe>
+    </Pipeline>
+  </Value>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="15"><Text><![CDATA[.*]]></Text>
+  </Chunk>
+  </Block>
+  </If>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="15"><Text><![CDATA[;
+  ]]></Text>
+  </Chunk>
+  </Block>
+  </For>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="16"><Text><![CDATA[
+
+  ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="18">
+  <With>Binding (Pattern (Location "Emitter.hs.neat" 18) "(Class annotations access modifier name parents members)") (Value (Location "Emitter.hs.neat" 18) ["cls"])
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="18"><Text><![CDATA[
+    ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="19">
+  <Output>
+  <Value file="Emitter.hs.neat" line="19">
+    <Pipeline>
+        <Pipe><![CDATA[access]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="19"><Text><![CDATA[ ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="19">
+  <Output>
+  <Value file="Emitter.hs.neat" line="19">
+    <Pipeline>
+        <Pipe><![CDATA[modifier]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="19"><Text><![CDATA[ class ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="19">
+  <Output>
+  <Value file="Emitter.hs.neat" line="19">
+    <Pipeline>
+        <Pipe><![CDATA[name]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="19"><Text><![CDATA[
+    ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="20">
+   <For>Binding (Pattern (Location "Emitter.hs.neat" 20) "parent") (Value (Location "Emitter.hs.neat" 20) ["parents"])
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="20"><Text><![CDATA[
+      ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="21">
+  <Switch>
+  <Value file="Emitter.hs.neat" line="21">
+    <Pipeline>
+        <Pipe><![CDATA[parent]]></Pipe>
+    </Pipeline>
+  </Value>
+  <Case>
+  <Pattern file="Emitter.hs.neat" line="22"><![CDATA[(Implements interfaces)]]></Pattern>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="22"><Text><![CDATA[ implements ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="22">
+  <Output>
+  <Value file="Emitter.hs.neat" line="22">
+    <Pipeline>
+        <Pipe><![CDATA[join ", " interfaces]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="22"><Text><![CDATA[
+        ]]></Text>
+  </Chunk>
+  </Block>
+  </Case>
+  <Case>
+  <Pattern file="Emitter.hs.neat" line="23"><![CDATA[(Extends super)]]></Pattern>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="23"><Text><![CDATA[ extends ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="23">
+  <Output>
+  <Value file="Emitter.hs.neat" line="23">
+    <Pipeline>
+        <Pipe><![CDATA[super]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="23"><Text><![CDATA[
+      ]]></Text>
+  </Chunk>
+  </Block>
+  </Case>
+  </Switch>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="24"><Text><![CDATA[
+    ]]></Text>
+  </Chunk>
+  </Block>
+  </For>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="25"><Text><![CDATA[
+    {
+
+      ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="28">
+   <For>Binding (Pattern (Location "Emitter.hs.neat" 28) "(Member annotations access element)") (Value (Location "Emitter.hs.neat" 28) ["members"])
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="28"><Text><![CDATA[
+        ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="29">
+  <Output>
+  <Value file="Emitter.hs.neat" line="29">
+    <Pipeline>
+        <Pipe><![CDATA[annotations]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="29"><Text><![CDATA[ ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="29">
+  <Output>
+  <Value file="Emitter.hs.neat" line="29">
+    <Pipeline>
+        <Pipe><![CDATA[access]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="29"><Text><![CDATA[ ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="29">
+  <Output>
+  <Value file="Emitter.hs.neat" line="29">
+    <Pipeline>
+        <Pipe><![CDATA[emit' name element]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="29"><Text><![CDATA[
+      ]]></Text>
+  </Chunk>
+  </Block>
+  </For>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="30"><Text><![CDATA[
+    }
+  ]]></Text>
+  </Chunk>
+  </Block>
+  </With>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="32"><Text><![CDATA[
+]]></Text>
+  </Chunk>
+  </Block>
+  </Define>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="33"><Text><![CDATA[
+
+]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="35">
+  <Define name="emit'" file="Emitter.hs.neat" line="35">
+  <Pattern file="Emitter.hs.neat" line="35"><![CDATA[ className element]]></Pattern>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="35"><Text><![CDATA[
+  ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="36">
+  <Switch>
+  <Value file="Emitter.hs.neat" line="36">
+    <Pipeline>
+        <Pipe><![CDATA[element]]></Pipe>
+    </Pipeline>
+  </Value>
+  <Case>
+  <Pattern file="Emitter.hs.neat" line="37"><![CDATA[(Constructor arguments body)]]></Pattern>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="37"><Text><![CDATA[
+      ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="38">
+  <Output>
+  <Value file="Emitter.hs.neat" line="38">
+    <Pipeline>
+        <Pipe><![CDATA[className]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="38"><Text><![CDATA[(]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="38">
+  <Output>
+  <Value file="Emitter.hs.neat" line="38">
+    <Pipeline>
+        <Pipe><![CDATA[join ", " arguments]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="38"><Text><![CDATA[)]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="38">
+  <Output>
+  <Value file="Emitter.hs.neat" line="38">
+    <Pipeline>
+        <Pipe><![CDATA[fromMaybe ";" body]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="38"><Text><![CDATA[
+    ]]></Text>
+  </Chunk>
+  </Block>
+  </Case>
+  <Case>
+  <Pattern file="Emitter.hs.neat" line="39"><![CDATA[(Method qualifier modifier type' name arguments exceptions body)]]></Pattern>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="39"><Text><![CDATA[
+      ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="40">
+  <Output>
+  <Value file="Emitter.hs.neat" line="40">
+    <Pipeline>
+        <Pipe><![CDATA[modifier]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="40"><Text><![CDATA[ ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="40">
+  <Output>
+  <Value file="Emitter.hs.neat" line="40">
+    <Pipeline>
+        <Pipe><![CDATA[type']]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="40"><Text><![CDATA[ ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="40">
+  <Output>
+  <Value file="Emitter.hs.neat" line="40">
+    <Pipeline>
+        <Pipe><![CDATA[name]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="40"><Text><![CDATA[(]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="40">
+  <Output>
+  <Value file="Emitter.hs.neat" line="40">
+    <Pipeline>
+        <Pipe><![CDATA[join ", " arguments]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="40"><Text><![CDATA[)
+      ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="41">
+   <If>
+  <Value file="Emitter.hs.neat" line="41">
+    <Pipeline>
+        <Pipe><![CDATA[exceptions]]></Pipe>
+    </Pipeline>
+  </Value>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="41"><Text><![CDATA[ throws ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="41">
+  <Output>
+  <Value file="Emitter.hs.neat" line="41">
+    <Pipeline>
+        <Pipe><![CDATA[join ", " exceptions]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="41"><Text><![CDATA[ ]]></Text>
+  </Chunk>
+  </Block>
+  </If>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="41"><Text><![CDATA[
+      ]]></Text>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="42">
+  <Output>
+  <Value file="Emitter.hs.neat" line="42">
+    <Pipeline>
+        <Pipe><![CDATA[fromMaybe ";" body]]></Pipe>
+    </Pipeline>
+  </Value></Output>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="42"><Text><![CDATA[
+    ]]></Text>
+  </Chunk>
+  </Block>
+  </Case><Default>
+  <Block>
+  <Chunk file="Emitter.hs.neat" line="43"><Text><![CDATA[
+    // Unimplemented member type.
+  ]]></Text>
+  </Chunk>
+  </Block></Default>
+  </Switch>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="45"><Text><![CDATA[
+]]></Text>
+  </Chunk>
+  </Block>
+  </Define>
+  </Chunk>
+  <Chunk file="Emitter.hs.neat" line="46"><Text><![CDATA[
+]]></Text>
+  </Chunk>
+  </Block>
+</File>
